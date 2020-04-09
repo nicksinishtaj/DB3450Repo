@@ -436,8 +436,6 @@ CREATE TABLE IF NOT EXISTS `construction_company`.`project_inventory` (
   `QUANTITY` INT NOT NULL DEFAULT '0',
   `PROJECT_ID` INT NOT NULL,
   PRIMARY KEY (`INVENTORY_ID`, `PROJECT_ID`),
-  UNIQUE INDEX `project_id_UNIQUE` (`PROJECT_ID` ASC) VISIBLE,
-  UNIQUE INDEX `product_id_UNIQUE` (`INVENTORY_ID` ASC) VISIBLE,
   CONSTRAINT `INVENTORY_ID`
     FOREIGN KEY (`INVENTORY_ID`)
     REFERENCES `construction_company`.`inventory` (`INVENTORY_ID`))
@@ -481,6 +479,81 @@ CREATE TABLE IF NOT EXISTS `construction_company`.`supplier_contact` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO construction_company.employee (EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_MIDDLE, EMPLOYEE_NAME_LAST, EMPLOYEE_TITLE, EMPLOYEE_DOB, EMPLOYEE_HIRE_DATE, EMPLOYEE_EMAIL_WORK, EMPLOYEE_EMAIL_ALT, EMPLOYEE_TEL_WORK, EMPLOYEE_MANAGER_ID, EMPLOYEE_PAY_RATE) VALUES 
+												 ('Gojcaj', 'Ljin', 'Nicholas', 'Software Engineer', '2000-04-01', '2020-03-26', 'nicksinz@oakland.edu', 'nicksinz@gmail.com', '5550129555', 1, 10),
+                                                 ('Dushaj', 'Ljin', 'Jimmy', 'HR Manager', '2002-04-01', '2020-03-27', 'jimmyd@oakland.edu', 'jimmyd@gmail.com', '5550129555', 1, 10),
+                                                 ('Lulgjuraj', 'Ljin', 'Joey', 'Lead Buyer', '2000-03-01', '2020-03-28', 'joeyl@oakland.edu', 'joeyl@gmail.com', '5550129556', 1, 10),
+                                                 ('Gjokaj', 'Ljin', 'James', 'QA Analyst', '2003-04-02', '2020-03-25', 'jamesg@oakland.edu', 'jamesg@gmail.com', '5550129557', 1, 10),
+                                                 ('Gjurashaj', 'Ljin', 'Zefi', 'Account Manager', '1995-04-01', '2020-03-24', 'zefig@oakland.edu', 'zefig@gmail.com', '5550129558', 1, 10),
+                                                 ('Gjelaj', 'Ljin', 'Johnny', 'Marketing Manager', '1990-04-01', '2020-03-23', 'johnnyg@oakland.edu', 'johnnyg@gmail.com', '5550129559', 1, 10);
+
+INSERT INTO construction_company.permission VALUES 
+(1, 'View', 'User can view records'),
+(2, 'Update', 'User can update records'),
+(3, 'Add', 'User can add records'),
+(4, 'Delete', 'User can delete records');
+
+INSERT INTO construction_company.employee_permission (EMPLOYEE_PERMISSION_ID, EMPLOYEE_ID, PERMISSION_LEVEL, EMPLOYEE_PERMISSION_START) VALUES
+	(1, 1, 1, '2020-04-01'),
+	(2, 1, 1, '2020-04-01'),
+	(3, 1, 1, '2020-04-01'),
+	(4, 1, 1, '2020-04-01'),
+	(5, 12, 1, '2020-04-01'),
+	(6, 12, 1, '2020-04-01'),
+	(7, 12, 1, '2020-04-01'),
+	(8, 12, 1, '2020-04-01'),
+	(9, 11, 1, '2020-04-01');
+
+INSERT INTO construction_company.inventory (INVENTORY_NAME, INVENTORY_DESCRIPTION) VALUES 
+	('Hammer', 'One great hammer'),
+    ('Screwdriver', 'One great screwdriver'),
+    ('Paint', 'One great paint'),
+    ('Paintbrush', 'One great paintbrush'),
+    ('Saw', 'One great saw');
+
+INSERT INTO construction_company.project VALUES
+(1, 'PROSPECTIVE', 'Wal-Mart E Long Lake', 80.50, 1),
+(2, 'PLANNING', 'Wal-Mart E Long Lake', 80.50, 1),
+(3, 'CURRENT', 'Wal-Mart E Long Lake', 80.50, 2),
+(4, 'COMPLETE', 'Wal-Mart E Long Lake', 80.50, 3);
+
+INSERT INTO construction_company.customer_company (CUSTOMER_COMPANY_NAME, CUSTOMER_COMPANY_STREET1, CUSTOMER_COMPANY_CITY, CUSTOMER_COMPANY_STATE, CUSTOMER_COMPANY_ZIP, EMPLOYEE_ID) VALUES
+
+('Google', '123 East Long Lake', 'Troy', 'MI', 48007, 1),
+('Amazon', '123 West Long Lake', 'Washington', 'MI', 48094, 1),
+('Google', '123 North Long Lake', 'Macomb', 'MI', 48042, 1);
+
+INSERT INTO construction_company.project_inventory VALUES
+
+(21, 10, 1),
+(22, 10, 1),
+(25, 10, 1),
+(23, 100, 3),
+(24, 15, 3);
+
+INSERT INTO construction_company.supplier_company (SUPPLIER_COMPANY_NAME, SUPPLIER_COMPANY_STREET1, SUPPLIER_COMPANY_CITY, SUPPLIER_COMPANY_STATE, SUPPLIER_COMPANY_ZIP) VALUES
+('Home Depot', '123 Squirrel Rd', 'Rochester', 'MI', 48306),
+('Loews', '123 Walton Rd', 'Rochester', 'MI', 48306);
+
+INSERT INTO construction_company.inventory_supplier (INVENTORY_ID, SUPPLIER_ID, INVENTORY_SUPPLIER_COST, INVENTORY_SUPPLIER_AMOUNT, INVENTORY_SUPPLIER_PREFERRED) VALUES
+(21, 1, 30.0, 2, 1),
+(22, 1, 30.0, 2, 1),
+(25, 1, 20.0, 2, 1),
+(23, 2, 5.0, 10, 1),
+(24, 2, 10.0, 10, 1);
+
+INSERT INTO construction_company.supplier_contact VALUES
+(1, 1, 'James', 'Nicaj', 'jamesnicaj@gmail.com', 5551234509, 'Manufacturer', 1),
+(2, 1, 'Andrew', 'Kalaj', 'andrewkalaj@gmail.com', 5551234519, 'Sales Rep', 1),
+(3, 2, 'Robbie', 'Gjonaj', 'robbiegjonaj@gmail.com', 5551234529, 'Manufacturer', 1),
+(4, 2, 'Jimmy', 'Berishaj', 'jimmyberishaj@gmail.com', 5551233509, 'Sales Rep', 1);
+
+
+
+
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
