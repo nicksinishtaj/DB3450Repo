@@ -1,22 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from construction_company.models import Inventory
-from construction_company.models import EmployeePermission
-from construction_company.models import Employee
-from construction_company.models import Permission
-from construction_company.models import Project
+from DB3450Repo.models import Inventory
+from DB3450Repo.models import EmployeePermission
+from DB3450Repo.models import Employee
+from DB3450Repo.models import Permission
+from DB3450Repo.models import Project
 from datetime import date
     
 
 def index(request):
-    return render(request, 'construction_company/home.html')
+    return render(request, 'DB3450Repo/home.html')
 
 def inventory_view(request):
     query_set = Inventory.objects.raw('SELECT * FROM inventory')
     context = {
         'object_instance' : query_set
     }
-    return render(request, 'construction_company/inventory.html', context)
+    return render(request, 'DB3450Repo/inventory.html', context)
 
 def employeePermission_view(request):
     query_set = EmployeePermission.objects.raw('SELECT * FROM employee_permission')
@@ -33,10 +33,10 @@ def employeePermission_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermission.html', context)
+    return render(request, 'DB3450Repo/employeePermission.html', context)
 
 def employeePermissionQuery_view(request):
-    return render(request, 'construction_company/employeePermissionQuery.html')
+    return render(request, 'DB3450Repo/employeePermissionQuery.html')
 
 def employeePermissionDetails_view(request):
     employee_id_request = request.GET['employee_id']
@@ -60,7 +60,7 @@ def employeePermissionDetails_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermissionDetails.html', context)
+    return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
 
 
 def employeePermissionAdd_view(request):
@@ -78,7 +78,7 @@ def employeePermissionAdd_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermissionAdd.html', context)
+    return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
 
 def employeePermissionAfterAdd_view(request):
     employee_id = request.GET['employee_id']
@@ -124,11 +124,11 @@ def employeePermissionAfterAdd_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermission.html', context)
+    return render(request, 'DB3450Repo/employeePermission.html', context)
 
     
 def inventoryQuery_view(request):
-    return render(request, 'construction_company/inventoryQuery.html')
+    return render(request, 'DB3450Repo/inventoryQuery.html')
 
 def inventoryDetails_view(request):
     inventory_name = request.GET['inventory_name']
@@ -144,7 +144,7 @@ def inventoryDetails_view(request):
         'object_instance' : query_set_append
     }
 
-    return render(request, 'construction_company/inventoryDetails.html', context)
+    return render(request, 'DB3450Repo/inventoryDetails.html', context)
 
 
 
