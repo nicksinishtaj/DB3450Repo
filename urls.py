@@ -10,5 +10,9 @@ urlpatterns = [
     path('inventory/', views.inventory_view, name='inventory'),
     path('inventoryQuery', views.inventoryQuery_view, name='inventoryQuery'),
     path('inventoryDetails', views.inventoryDetails_view, name='inventoryDetails'),
-
+    path('employeePermission/', views.employeePermission_view, name='employee_permission'),
+    path('employeePermissionAdd', views.employeePermissionAdd_view, name='employeePermissionAdd'),
+    path('employeePermissionAfterAdd', views.employeePermissionAfterAdd_view, name='employeePermissionAfterAdd'),
+    path('employeePermissionQuery', views.employeePermissionQuery_view, name='employeePermissionQuery'),
+    path('employeePermissionDetails', views.employeePermissionDetails_view, name='employeePermissionDetails'),
 ]

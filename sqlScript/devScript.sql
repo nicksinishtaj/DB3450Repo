@@ -349,7 +349,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `construction_company`.`employee_permission`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `construction_company`.`employee_permission` (
-  `EMPLOYEE_PERMISSION_ID` INT NOT NULL,
+  `EMPLOYEE_PERMISSION_ID` INT NOT NULL AUTO_INCREMENT,
   `EMPLOYEE_ID` INT NOT NULL,
   `PERMISSION_LEVEL` INT NOT NULL,
   `PROJECT_ID` INT NULL DEFAULT NULL,
@@ -480,13 +480,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-INSERT INTO construction_company.employee (EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_MIDDLE, EMPLOYEE_NAME_LAST, EMPLOYEE_TITLE, EMPLOYEE_DOB, EMPLOYEE_HIRE_DATE, EMPLOYEE_EMAIL_WORK, EMPLOYEE_EMAIL_ALT, EMPLOYEE_TEL_WORK, EMPLOYEE_MANAGER_ID, EMPLOYEE_PAY_RATE) VALUES 
-												 ('Gojcaj', 'Ljin', 'Nicholas', 'Software Engineer', '2000-04-01', '2020-03-26', 'nicksinz@oakland.edu', 'nicksinz@gmail.com', '5550129555', 1, 10),
-                                                 ('Dushaj', 'Ljin', 'Jimmy', 'HR Manager', '2002-04-01', '2020-03-27', 'jimmyd@oakland.edu', 'jimmyd@gmail.com', '5550129555', 1, 10),
-                                                 ('Lulgjuraj', 'Ljin', 'Joey', 'Lead Buyer', '2000-03-01', '2020-03-28', 'joeyl@oakland.edu', 'joeyl@gmail.com', '5550129556', 1, 10),
-                                                 ('Gjokaj', 'Ljin', 'James', 'QA Analyst', '2003-04-02', '2020-03-25', 'jamesg@oakland.edu', 'jamesg@gmail.com', '5550129557', 1, 10),
-                                                 ('Gjurashaj', 'Ljin', 'Zefi', 'Account Manager', '1995-04-01', '2020-03-24', 'zefig@oakland.edu', 'zefig@gmail.com', '5550129558', 1, 10),
-                                                 ('Gjelaj', 'Ljin', 'Johnny', 'Marketing Manager', '1990-04-01', '2020-03-23', 'johnnyg@oakland.edu', 'johnnyg@gmail.com', '5550129559', 1, 10);
+INSERT INTO construction_company.employee (EMPLOYEE_ID, EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_MIDDLE, EMPLOYEE_NAME_LAST, EMPLOYEE_TITLE, EMPLOYEE_DOB, EMPLOYEE_HIRE_DATE, EMPLOYEE_EMAIL_WORK, EMPLOYEE_EMAIL_ALT, EMPLOYEE_TEL_WORK, EMPLOYEE_MANAGER_ID, EMPLOYEE_PAY_RATE) VALUES 
+												 (1, 'Gojcaj', 'Ljin', 'Nicholas', 'Software Engineer', '2000-04-01', '2020-03-26', 'nicksinz@oakland.edu', 'nicksinz@gmail.com', '5550129555', 1, 10),
+                                                 (2, 'Dushaj', 'Ljin', 'Jimmy', 'HR Manager', '2002-04-01', '2020-03-27', 'jimmyd@oakland.edu', 'jimmyd@gmail.com', '5550129555', 1, 10),
+                                                 (3, 'Lulgjuraj', 'Ljin', 'Joey', 'Lead Buyer', '2000-03-01', '2020-03-28', 'joeyl@oakland.edu', 'joeyl@gmail.com', '5550129556', 1, 10),
+                                                 (4, 'Gjokaj', 'Ljin', 'James', 'QA Analyst', '2003-04-02', '2020-03-25', 'jamesg@oakland.edu', 'jamesg@gmail.com', '5550129557', 1, 10),
+                                                 (5, 'Gjurashaj', 'Ljin', 'Zefi', 'Account Manager', '1995-04-01', '2020-03-24', 'zefig@oakland.edu', 'zefig@gmail.com', '5550129558', 1, 10),
+                                                 (6, 'Gjelaj', 'Ljin', 'Johnny', 'Marketing Manager', '1990-04-01', '2020-03-23', 'johnnyg@oakland.edu', 'johnnyg@gmail.com', '5550129559', 1, 10);
 
 INSERT INTO construction_company.permission VALUES 
 (1, 'View', 'User can view records'),
@@ -499,11 +499,11 @@ INSERT INTO construction_company.employee_permission (EMPLOYEE_PERMISSION_ID, EM
 	(2, 1, 1, '2020-04-01'),
 	(3, 1, 1, '2020-04-01'),
 	(4, 1, 1, '2020-04-01'),
-	(5, 12, 1, '2020-04-01'),
-	(6, 12, 1, '2020-04-01'),
-	(7, 12, 1, '2020-04-01'),
-	(8, 12, 1, '2020-04-01'),
-	(9, 11, 1, '2020-04-01');
+	(5, 2, 1, '2020-04-01'),
+	(6, 2, 1, '2020-04-01'),
+	(7, 2, 1, '2020-04-01'),
+	(8, 2, 1, '2020-04-01'),
+	(9, 2, 1, '2020-04-01');
 
 INSERT INTO construction_company.inventory (INVENTORY_NAME, INVENTORY_DESCRIPTION) VALUES 
 	('Hammer', 'One great hammer'),
