@@ -1,17 +1,17 @@
 from django.contrib import admin
-from construction_company.models import CustomerCompany
-from construction_company.models import CustomerContact
-from construction_company.models import Employee
-from construction_company.models import EmployeeHours
-from construction_company.models import EmployeePermission
-from construction_company.models import Inventory
-from construction_company.models import InventorySupplier
-from construction_company.models import Permission
-from construction_company.models import Project
-from construction_company.models import ProjectInventory
-from construction_company.models import Purchase
-from construction_company.models import SupplierCompany
-from construction_company.models import SupplierContact
+from DB3450Repo.models import CustomerCompany
+from DB3450Repo.models import CustomerContact
+from DB3450Repo.models import Employee
+from DB3450Repo.models import EmployeeHours
+from DB3450Repo.models import EmployeePermission
+from DB3450Repo.models import Inventory
+from DB3450Repo.models import InventorySupplier
+from DB3450Repo.models import Permission
+from DB3450Repo.models import Project
+from DB3450Repo.models import ProjectInventory
+from DB3450Repo.models import Purchase
+from DB3450Repo.models import SupplierCompany
+from DB3450Repo.models import SupplierContact
 
 # Register your models here.
 
