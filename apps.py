@@ -1,6 +1,5 @@
 from django.apps import AppConfig
 
 
-class ConstructionCompanyConfig(AppConfig):
-    #name = 'construction_company'
+class DB3450RepoConfig(AppConfig):
     name = 'DB3450Repo'
