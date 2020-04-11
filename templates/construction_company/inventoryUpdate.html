@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Construction</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Permission</h1>
+        <p>Enter new inventory name and description</p>
+        <br/>
+
+        <form action="{% url 'inventoryAfterUpdate' %}">
+            <textarea name=inventory_id cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=inventory_name cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name="inventory_description" cols="10" rows="1"></textarea>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="row">
+            <div class="col-sm-4">
+                <h1>Name</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_id}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-4">
+                <h1>Name</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_name}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-4">
+                <h1>   Description</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_description}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

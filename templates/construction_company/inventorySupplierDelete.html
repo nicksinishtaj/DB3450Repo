@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Construction</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Permission</h1>
+        <p>Enter new inventory name and description</p>
+        <br/>
+
+        <form action="{% url 'inventorySupplierAfterDelete' %}">
+            <textarea name=inventory_name cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_company cols="10" rows="1"></textarea>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="row">
+            <div class="col">
+                <h1>Inventory</h1>
+                {% for item in inventory_object_instance %}
+                    <p>{{item.inventory_name}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Supplier</h1>
+                {% for item in supplier_object_instance %}
+                    <p>{{item.supplier_company_name}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Cost</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_supplier_cost}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Amount</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_supplier_amount}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Notes</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_supplier_notes}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Preferred</h1>
+                {% for item in object_instance %}
+                    <p>{{item.inventory_supplier_preferred}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
