@@ -219,7 +219,7 @@ class Inventory(models.Model):
 
 
 class InventorySupplier(models.Model):
-    inventory_id = models.IntegerField(db_column='INVENTORY_ID', primary_key=True)  # Field name made lowercase.
+    inventory_supplier_inventory = models.OneToOneField('Inventory', models.DO_NOTHING, db_column='INVENTORY_SUPPLIER_INVENTORY_ID', primary_key=True)  # Field name made lowercase.
     supplier = models.ForeignKey('SupplierCompany', models.DO_NOTHING, db_column='SUPPLIER_ID')  # Field name made lowercase.
     inventory_supplier_cost = models.DecimalField(db_column='INVENTORY_SUPPLIER_COST', max_digits=10, decimal_places=2)  # Field name made lowercase.
     inventory_supplier_amount = models.IntegerField(db_column='INVENTORY_SUPPLIER_AMOUNT')  # Field name made lowercase.
@@ -229,7 +229,7 @@ class InventorySupplier(models.Model):
     class Meta:
         managed = False
         db_table = 'inventory_supplier'
-        unique_together = (('inventory_id', 'supplier'),)
+        unique_together = (('inventory_supplier_inventory', 'supplier'),)
 
 
 class Permission(models.Model):
