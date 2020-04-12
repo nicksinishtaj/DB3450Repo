@@ -513,8 +513,8 @@ INSERT INTO construction_company.inventory (INVENTORY_NAME, INVENTORY_DESCRIPTIO
 INSERT INTO construction_company.project VALUES
 (1, 'PROSPECTIVE', 'Wal-Mart E Long Lake', 80.50, 1),
 (2, 'PLANNING', 'Wal-Mart E Long Lake', 80.50, 1),
-(3, 'CURRENT', 'Wal-Mart E Long Lake', 80.50, 2),
-(4, 'COMPLETE', 'Wal-Mart E Long Lake', 80.50, 3);
+(3, 'CURRENT', 'Jackson National N Long Lake', 80.50, 2),
+(4, 'COMPLETE', 'Kroger W Long Lake', 80.50, 3);
 
 INSERT INTO construction_company.customer_company (CUSTOMER_COMPANY_NAME, CUSTOMER_COMPANY_STREET1, CUSTOMER_COMPANY_CITY, CUSTOMER_COMPANY_STATE, CUSTOMER_COMPANY_ZIP, EMPLOYEE_ID) VALUES
 

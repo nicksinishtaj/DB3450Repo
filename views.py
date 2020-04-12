@@ -145,7 +145,7 @@ def employeePermissionDelete_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermissionDelete.html', context)
+    return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
 
 def employeePermissionAfterDelete_view(request):
     employee_id = request.GET['employee_id']
@@ -177,11 +177,8 @@ def employeePermissionAfterDelete_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
-    return render(request, 'construction_company/employeePermissionAfterDelete.html', context)
-
-
-
-    
+    return render(request, 'DB3450Repo/employeePermissionAfterDelete.html', context)
+  
 def inventoryQuery_view(request):
     return render(request, 'DB3450Repo/inventoryQuery.html')
 
@@ -207,7 +204,7 @@ def inventoryAdd_view(request):
     context = {
         'object_instance': query_set
     }
-    return render(request, 'construction_company/inventoryAdd.html', context)
+    return render(request, 'DB3450Repo/inventoryAdd.html', context)
 
 def inventoryAfterAdd_view(request):
     inventory_name_request = request.GET['inventory_name']
@@ -221,7 +218,7 @@ def inventoryAfterAdd_view(request):
         'object_instance' : query_set
     }
 
-    return render(request, 'construction_company/inventoryAfterAdd.html', context)
+    return render(request, 'DB3450Repo/inventoryAfterAdd.html', context)
 
 def inventoryUpdate_view(request):
     query_set = Inventory.objects.raw('SELECT * FROM inventory')
@@ -229,7 +226,7 @@ def inventoryUpdate_view(request):
     context = {
         'object_instance': query_set
     }
-    return render(request, 'construction_company/inventoryUpdate.html', context)
+    return render(request, 'DB3450Repo/inventoryUpdate.html', context)
 
 def inventoryAfterUpdate_view(request):
     inventory_id_request = request.GET['inventory_id']
@@ -251,7 +248,7 @@ def inventoryAfterUpdate_view(request):
         'object_instance' : query_set
     }
 
-    return render(request, 'construction_company/inventoryAfterUpdate.html', context)
+    return render(request, 'DB3450Repo/inventoryAfterUpdate.html', context)
 
 def inventorySupplierAdd_view(request):
     query_set = InventorySupplier.objects.raw('SELECT * FROM inventory_supplier')
@@ -271,7 +268,7 @@ def inventorySupplierAdd_view(request):
         'inventory_object_instance': inventory_query_set_append,
         'supplier_object_instance': supplier_query_set_append
     }
-    return render(request, 'construction_company/inventorySupplierAddOrUpdate.html', context)
+    return render(request, 'DB3450Repo/inventorySupplierAddOrUpdate.html', context)
 
 def inventorySupplierAfterAdd_view(request):
     inventory_name_request = request.GET['inventory_name']
@@ -320,7 +317,7 @@ def inventorySupplierAfterAdd_view(request):
         'supplier_object_instance': supplier_query_set_append
     }
 
-    return render(request, 'construction_company/inventorySupplierAfterAddOrUpdate.html', context)
+    return render(request, 'DB3450Repo/inventorySupplierAfterAddOrUpdate.html', context)
 
 
 def inventorySupplierDelete_view(request):
@@ -341,7 +338,7 @@ def inventorySupplierDelete_view(request):
         'inventory_object_instance': inventory_query_set_append,
         'supplier_object_instance': supplier_query_set_append
     }
-    return render(request, 'construction_company/inventorySupplierDelete.html', context)
+    return render(request, 'DB3450Repo/inventorySupplierDelete.html', context)
 
 def inventorySupplierAfterDelete_view(request):
     inventory_name_request = request.GET['inventory_name']
@@ -373,7 +370,7 @@ def inventorySupplierAfterDelete_view(request):
         'supplier_object_instance': supplier_query_set_append
     }
 
-    return render(request, 'construction_company/inventorySupplierAfterDelete.html', context)
+    return render(request, 'DB3450Repo/inventorySupplierAfterDelete.html', context)
 
 def supplierAddOrUpdate_view(request):
     query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
@@ -381,7 +378,7 @@ def supplierAddOrUpdate_view(request):
     context = {
         'object_instance': query_set,
     }
-    return render(request, 'construction_company/supplierAddOrUpdate.html', context)
+    return render(request, 'DB3450Repo/supplierAddOrUpdate.html', context)
 
 def supplierAfterAddOrUpdate_view(request):
     id_req = request.GET['supplier_company_id']
@@ -416,5 +413,31 @@ def supplierAfterAddOrUpdate_view(request):
     context = {
         'object_instance': query_set,
     }
-    return render(request, 'construction_company/supplierAfterAddOrUpdate.html', context)
-        
+    return render(request, 'DB3450Repo/supplierAfterAddOrUpdate.html', context)
+
+def projectBaseInfo_view(request):
+    query_set_append = []
+    if request.GET.get('project_id'):
+        project_id = request.GET['project_id']
+        project_id_int = int(project_id)
+        query_set = Project.objects.raw('SELECT * FROM project')
+        for object in query_set:
+            print(object.project_id)
+            if(project_id_int == object.project_id):
+                print("We added an item")
+                query_set_append.append(object)
+
+    context = {
+        'project_details': query_set_append
+    }
+
+    return render(request, 'DB3450Repo/projectBaseInfo.html', context)
+
+def projectBudget_view(request):
+    return render(request, 'DB3450Repo/projectBudget.html')
+
+def projectEmployees_view(request):
+    return render(request, 'DB3450Repo/projectEmployees.html')
+
+def projectInventory_view(request):
+    return render(request, 'DB3450Repo/projectInventory.html')
