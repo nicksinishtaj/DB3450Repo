@@ -22,7 +22,11 @@ urlpatterns = [
     path('inventoryUpdate', views.inventoryUpdate_view, name='inventoryUpdate'),
     # Get inventory details; comes after inventoryUpdate
     path('inventoryAfterUpdate', views.inventoryAfterUpdate_view, name='inventoryAfterUpdate'),
-    # List employee permissions
+    # Get inventory purchase information
+    path('inventoryPurchaseInfo', views.inventoryPurchaseInfo_view, name='inventoryPurchaseInfo'),
+    # Get employee purchase info
+    path('employeePurchaseInfo', views.employeePurchaseInfo_view, name='employeePurchaseInfo'),
+    # Get employee permissions
     path('employeePermission/', views.employeePermission_view, name='employee_permission'),
     # Add employee permissions
     path('employeePermissionAdd', views.employeePermissionAdd_view, name='employeePermissionAdd'),

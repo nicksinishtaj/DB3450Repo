@@ -21,6 +21,22 @@ def inventory_view(request):
     }
     return render(request, 'DB3450Repo/inventory.html', context)
 
+def employeePurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('employee_info_id'):
+        employee_id = request.GET['employee_info_id']
+        employee_id_int = int(employee_id)
+        cursor = connection.cursor()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                          FROM purchase, inventory
+                          WHERE purchase.EMPLOYEE_ID = %s
+                          AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                        """, [employee_id_int])
+        query_set_append = cursor.fetchall()
+        cursor.close()
+    print(query_set_append)
+    return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
+
 def employeePermission_view(request):
     query_set = EmployeePermission.objects.raw('SELECT * FROM employee_permission')
     employee_query_set = Employee.objects.raw('SELECT * FROM employee')
@@ -58,11 +74,11 @@ def employeePermissionDetails_view(request):
                     employee_query_set_append.append(employeePermission.employee)
                     permission_query_set_append.append(employeePermission.permission_level)
     
-
     context = {
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
 
 
@@ -81,6 +97,7 @@ def employeePermissionAdd_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
 
 def employeePermissionAfterAdd_view(request):
@@ -127,6 +144,7 @@ def employeePermissionAfterAdd_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermission.html', context)
 
 
@@ -145,6 +163,7 @@ def employeePermissionDelete_view(request):
         'employee_object_instance' : employee_query_set_append,
         'permission_object_instance' : permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
 
 def employeePermissionAfterDelete_view(request):
@@ -190,7 +209,6 @@ def inventoryDetails_view(request):
     for object in query_set:
             if(inventory_name == object.inventory_name):
                 query_set_append.append(object)
-
 
     context = {
         'object_instance' : query_set_append
@@ -249,6 +267,25 @@ def inventoryAfterUpdate_view(request):
     }
 
     return render(request, 'DB3450Repo/inventoryAfterUpdate.html', context)
+
+def inventoryPurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('inventory_info_id'):
+        inventory_id = request.GET['inventory_info_id']
+        inventory_id_int = int(inventory_id)
+        cursor = connection.cursor()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                        FROM purchase, inventory
+                        WHERE inventory.INVENTORY_ID = %s
+                        AND inventory.INVENTORY_ID = purchase.INVENTORY_ID;
+                        """, [inventory_id_int])
+        query_set_append = cursor.fetchall()
+        cursor.close()
+    
+    context = {
+        'invPurchInfo': query_set_append
+    }
+    return render(request, 'DB3450Repo/inventoryPurchaseInfo.html', context)
 
 def inventorySupplierAdd_view(request):
     query_set = InventorySupplier.objects.raw('SELECT * FROM inventory_supplier')
@@ -473,7 +510,7 @@ def projectInventory_view(request):
                       AND project_inventory.inventory_id = inventory.inventory_id;
                    """, [project_id_int])
     query_set_append = cursor.fetchall()
-    cursor.close
+    cursor.close()
 
     return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
 
@@ -486,6 +523,6 @@ def projectPurchases_view(request):
                        AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
                     """, [project_id_int])
     query_set_append = cursor.fetchall()
-    cursor.close
-    print(query_set_append)
+    cursor.close()
+    
     return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
