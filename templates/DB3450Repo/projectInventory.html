@@ -8,6 +8,19 @@
     <title>Construction</title>
 </head>
 <body>
-    <h1>Project Inventory Information</h1>
+    <div class="container">
+        <h1>Project Inventory Information</h1>
+        <p>The following items make up the project's inventory</p>
+
+        {% for item in projInventory%}
+            
+            <ul>
+                <li>Item Name: {{item.0}}</li>
+                <li>Item description: {{item.1}}</li>
+                <li>Item quantity: {{item.2}}</li>
+            </ul>
+
+        {% endfor %}
+    </div>  
 </body>
 </html>

@@ -56,4 +56,6 @@ urlpatterns = [
     path('projectEmployees', views.projectEmployees_view, name='projectEmployees'),
     # Get project inventory
     path('projectInventory', views.projectInventory_view, name='projectInventory'),
+    # Get project purchase information
+    path('projectPurchases', views.projectPurchases_view, name='projectPurchases'),
 ]

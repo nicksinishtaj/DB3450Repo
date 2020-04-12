@@ -465,4 +465,27 @@ def projectEmployees_view(request):
     return render(request, 'DB3450Repo/projectEmployees.html', {'projectEmployees': query_set_append})
 
 def projectInventory_view(request):
-    return render(request, 'DB3450Repo/projectInventory.html')
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    cursor.execute("""SELECT inventory_name, inventory_description, quantity
+                      FROM project_inventory, inventory
+                      WHERE project_inventory.project_id = %s
+                      AND project_inventory.inventory_id = inventory.inventory_id;
+                   """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close
+
+    return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
+
+def projectPurchases_view(request):
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                       FROM purchase, inventory
+                       WHERE purchase.PROJECT_ID = %s
+                       AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                    """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close
+    print(query_set_append)
+    return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
