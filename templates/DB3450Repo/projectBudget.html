@@ -8,6 +8,13 @@
     <title>Construction</title>
 </head>
 <body>
-    <h1>Project Budgetary Information</h1>
+    <div class="container">
+        <h1>Project Budgetary Information</h1>
+
+        {% for item in budgetResults %}
+           <label>Project Budget: </label> {{item.project_budget}}
+        {% endfor %}
+
+    </div>
 </body>
 </html>

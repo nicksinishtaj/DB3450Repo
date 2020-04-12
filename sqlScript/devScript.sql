@@ -492,16 +492,16 @@ INSERT INTO construction_company.permission VALUES
 (3, 'Add', 'User can add records'),
 (4, 'Delete', 'User can delete records');
 
-INSERT INTO construction_company.employee_permission (EMPLOYEE_PERMISSION_ID, EMPLOYEE_ID, PERMISSION_LEVEL, EMPLOYEE_PERMISSION_START) VALUES
-	(1, 1, 1, '2020-04-01'),
-	(2, 1, 1, '2020-04-01'),
-	(3, 1, 1, '2020-04-01'),
-	(4, 1, 1, '2020-04-01'),
-	(5, 2, 1, '2020-04-01'),
-	(6, 2, 1, '2020-04-01'),
-	(7, 2, 1, '2020-04-01'),
-	(8, 2, 1, '2020-04-01'),
-	(9, 2, 1, '2020-04-01');
+INSERT INTO construction_company.employee_permission (EMPLOYEE_PERMISSION_ID, EMPLOYEE_ID, PROJECT_ID, PERMISSION_LEVEL, EMPLOYEE_PERMISSION_START) VALUES
+	(1, 1, 1, 1, '2020-04-01'),
+	(2, 1, 2, 1, '2020-04-01'),
+	(3, 1, 3, 1, '2020-04-01'),
+	(4, 1, 4, 1, '2020-04-01'),
+	(5, 2, 1, 1, '2020-04-01'),
+	(6, 2, 2, 1, '2020-04-01'),
+	(7, 2, 3, 1, '2020-04-01'),
+	(8, 2, 4, 1, '2020-04-01'),
+	(9, 3, 1, 1, '2020-04-01');
 
 INSERT INTO construction_company.inventory (INVENTORY_NAME, INVENTORY_DESCRIPTION) VALUES 
 	('Hammer', 'One great hammer'),

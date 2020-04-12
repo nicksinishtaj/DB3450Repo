@@ -9,5 +9,11 @@
 </head>
 <body>
     <h1>Project Employee Information</h1>
+    <p> Employees authorized to view the project: </p>
+
+    {% for emp in projectEmployees %}
+        <br/>
+        Employee Name: {{emp.0}} {{emp.1}}
+    {% endfor %}
 </body>
 </html>

@@ -420,11 +420,11 @@ def projectBaseInfo_view(request):
     if request.GET.get('project_id'):
         project_id = request.GET['project_id']
         project_id_int = int(project_id)
+        #Creating session variable 
+        request.session['project_id'] = project_id_int
         query_set = Project.objects.raw('SELECT * FROM project')
         for object in query_set:
-            print(object.project_id)
             if(project_id_int == object.project_id):
-                print("We added an item")
                 query_set_append.append(object)
 
     context = {
@@ -434,10 +434,35 @@ def projectBaseInfo_view(request):
     return render(request, 'DB3450Repo/projectBaseInfo.html', context)
 
 def projectBudget_view(request):
-    return render(request, 'DB3450Repo/projectBudget.html')
+    project_id_int = request.session.get('project_id')
+    query_set_append = []
+    query_set = Project.objects.raw('Select * FROM project')
+    for object in query_set:
+        if(project_id_int == object.project_id):
+            query_set_append.append(object)
+    
+    context = {
+        'budgetResults': query_set_append
+    }
+    
+    return render(request, 'DB3450Repo/projectBudget.html', context)
 
 def projectEmployees_view(request):
-    return render(request, 'DB3450Repo/projectEmployees.html')
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    # Despite what is says here, it gets the first name first and last name second
+    cursor.execute("""SELECT employee_name_last, employee_name_first
+                      FROM employee  
+                      WHERE employee_id in (
+                          SELECT employee_id
+                          FROM employee_permission
+                          WHERE project_id = %s
+                      );
+                        """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close()
+    
+    return render(request, 'DB3450Repo/projectEmployees.html', {'projectEmployees': query_set_append})
 
 def projectInventory_view(request):
     return render(request, 'DB3450Repo/projectInventory.html')
