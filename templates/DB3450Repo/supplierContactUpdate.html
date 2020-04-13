@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Construction</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Supplier Contact</h1>
+        <p>Enter new inventory name and description</p>
+        <br/>
+
+        <form action="{% url 'supplierContactAfterUpdate' %}">
+            <textarea name=supplier_contact_id cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_id cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_contact_fname cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_contact_lname cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_contact_email cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_contact_tel cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name=supplier_contact_role cols="10" rows="1"></textarea>
+            <br/>
+            <textarea name="supplier_contact_current" cols="10" rows="1"></textarea>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="row">
+            <div class="col">
+                <h1>Contact ID</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_id}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Supplier ID</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_id}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Name</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_fname}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Last Name</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_lname}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>email</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_email}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Telephone</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_tel}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Role</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_role}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>current</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_contact_current}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -62,4 +62,8 @@ urlpatterns = [
     path('projectInventory', views.projectInventory_view, name='projectInventory'),
     # Get project purchase information
     path('projectPurchases', views.projectPurchases_view, name='projectPurchases'),
+    # Updated Supllier Contact
+    path('supplierContactUpdate ', views.supplierContactUpdate_view , name = ' supplierContactUpdate' ),
+    # Gets updated supplier Contact; comes after supplierContactUpdate
+    path('supplierContactAfterUpdate ', views.supplierContactAfterUpdate_view, name = 'supplierContactAfterUpdate ' ),
 ]

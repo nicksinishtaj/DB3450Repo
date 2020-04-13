@@ -526,3 +526,41 @@ def projectPurchases_view(request):
     cursor.close()
     
     return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
+
+def supplierContactUpdate_view(request):
+    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactUpdate.html', context)
+
+def supplierContactAfterUpdate_view(request):
+    id_req = request.GET['supplier_contact_id']
+    id2_req = request.GET['supplier_id']
+    fname_req = request.GET['supplier_contact_fname']
+    lname_req = request.GET['supplier_contact_lname']
+    email_req = request.GET['supplier_contact_email']
+    tel_req = request.GET['supplier_contact_tel']
+    notes_req = request.GET['supplier_contact_notes']
+    current_req = request.GET['supplier_contact_current']
+    id_req_int = 0
+    validateSupplier = None
+
+    if(id_req is not None and id_req != ''):
+        id_req_int = int(id_req)
+        validateSupplier = SupplierContact.objects.get(supplier_contact_id = id_req_int)
+    else:
+        validateSupplier = None
+
+    if(validateSupplier is not None):
+        cursor = connection.cursor()
+        cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [fname_req, lname_req, email_req, tel_req, role_req, current_req])
+        connection.commit()
+  
+    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
