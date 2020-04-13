@@ -7,6 +7,7 @@ from DB3450Repo.models import Employee
 from DB3450Repo.models import Permission
 from DB3450Repo.models import Project
 from DB3450Repo.models import SupplierCompany
+from DB3450Repo.models import SupplierContact
 from datetime import date
 from django.db import connection
     
@@ -528,7 +529,7 @@ def projectPurchases_view(request):
     return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
 
 def supplierContactUpdate_view(request):
-    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_contact')
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
 
     context = {
         'object_instance': query_set,
@@ -542,13 +543,14 @@ def supplierContactAfterUpdate_view(request):
     lname_req = request.GET['supplier_contact_lname']
     email_req = request.GET['supplier_contact_email']
     tel_req = request.GET['supplier_contact_tel']
-    notes_req = request.GET['supplier_contact_notes']
+    role_req = request.GET['supplier_contact_role']
     current_req = request.GET['supplier_contact_current']
     id_req_int = 0
     validateSupplier = None
 
     if(id_req is not None and id_req != ''):
         id_req_int = int(id_req)
+        id2_req_int = int(id2_req)
         validateSupplier = SupplierContact.objects.get(supplier_contact_id = id_req_int)
     else:
         validateSupplier = None
@@ -558,7 +560,7 @@ def supplierContactAfterUpdate_view(request):
         cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [fname_req, lname_req, email_req, tel_req, role_req, current_req])
         connection.commit()
   
-    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_contact')
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
 
     context = {
         'object_instance': query_set,
