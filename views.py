@@ -9,6 +9,7 @@ from DB3450Repo.models import Project
 from DB3450Repo.models import EmployeeHours, SupplierCompany
 from datetime import date
 from django.db import connection
+import django
 
 
 def index(request):
@@ -583,3 +584,132 @@ def employeeHoursDetails_view(request):
         'sun2_list':  sun2_list,
     }
     return render(request, 'DB3450Repo/employeeHoursDetails.html', context)
+
+
+def employeeHoursAdd_view(request):
+    employee_id_request = request.GET.get('employee_id')
+    project_id_request = request.GET.get('project_id')
+    start_date_request = request.GET.get('start_date')
+    mon1 = request.GET.get('mon1')
+    tues1 = request.GET.get('tues1')
+    wed1 = request.GET.get('wed1')
+    thur1 = request.GET.get('thur1')
+    fri1 = request.GET.get('fri1')
+    sat1 = request.GET.get('sat1')
+    sun1 = request.GET.get('sun2')
+    mon2 = request.GET.get('mon2')
+    tues2 = request.GET.get('tues2')
+    wed2 = request.GET.get('wed2')
+    thur2 = request.GET.get('thur2')
+    fri2 = request.GET.get('fri2')
+    sat2 = request.GET.get('sat2')
+    sun2 = request.GET.get('sun2')
+
+    messages = []
+
+    if employee_id_request == "" or start_date_request == "" or employee_id_request == None or start_date_request == None:
+        messages.append(
+            "Enter an employee id, start date, and the other necessary information to log time worked")
+    else:
+        previous_records = []
+        if project_id_request != "":
+            previous_records = EmployeeHours.objects.raw(
+                'SELECT * FROM employee_hours WHERE employee_id=' + employee_id_request + ' AND employee_hours_first_day="' + start_date_request + '" AND project_id=' + project_id_request)
+        else:
+            previous_records = EmployeeHours.objects.raw(
+                'SELECT * FROM employee_hours WHERE employee_id=' + employee_id_request + ' AND employee_hours_first_day="' + start_date_request + '" AND project_id IS NULL')
+
+        count = 0
+        for record in previous_records:
+            count = count + 1
+
+        if count > 0:
+            messages.append(
+                "You have already logged your time for this project for this pay period. If you need to fix this time sheet, please contact your manager.")
+        else:
+            employee_pay_rate = Employee.objects.raw(
+                'SELECT * FROM employee WHERE employee_id=' + employee_id_request)[0].employee_pay_rate
+
+            sql = 'INSERT INTO employee_hours SET employee_id=' + employee_id_request + \
+                ', employee_hours_first_day="' + start_date_request + \
+                '", employee_hours_rate=' + str(employee_pay_rate)
+            if (project_id_request != ""):
+                sql = sql + ", project_id=" + project_id_request
+            # Monday 1
+            if (mon1 != ""):
+                sql = sql + ", employee_hours_mon1=" + mon1
+            else:
+                sql = sql + ", employee_hours_mon1=0"
+            # Tuesday 1
+            if (tues1 != ""):
+                sql = sql + ", employee_hours_tue1=" + tues1
+            else:
+                sql = sql + ", employee_hours_tue1=0"
+            # Wednesday 1
+            if (wed1 != ""):
+                sql = sql + ", employee_hours_wed1=" + wed1
+            else:
+                sql = sql + ", employee_hours_wed1=0"
+            # Thursday 1
+            if (thur1 != ""):
+                sql = sql + ", employee_hours_thr1=" + thur1
+            else:
+                sql = sql + ", employee_hours_thr1=0"
+            # Friday 1
+            if (fri1 != ""):
+                sql = sql + ", employee_hours_fri1=" + fri1
+            else:
+                sql = sql + ", employee_hours_fri1=0"
+            # Saturday 1
+            if (sat1 != ""):
+                sql = sql + ", employee_hours_sat1=" + sat1
+            else:
+                sql = sql + ", employee_hours_sat1=0"
+            # Sunday 1
+            if (sun1 != ""):
+                sql = sql + ", employee_hours_sun1=" + sun1
+            else:
+                sql = sql + ", employee_hours_sun1=0"
+            # Monday 2
+            if (mon2 != ""):
+                sql = sql + ", employee_hours_mon2=" + mon2
+            else:
+                sql = sql + ", employee_hours_mon2=0"
+            # Tuesday 2
+            if (tues2 != ""):
+                sql = sql + ", employee_hours_tue2=" + tues2
+            else:
+                sql = sql + ", employee_hours_tue2=0"
+            # Wednesday 2
+            if (wed2 != ""):
+                sql = sql + ", employee_hours_wed2=" + wed2
+            else:
+                sql = sql + ", employee_hours_wed2=0"
+            # Thursday 2
+            if (thur2 != ""):
+                sql = sql + ", employee_hours_thr2=" + thur2
+            else:
+                sql = sql + ", employee_hours_thr2=0"
+            # Friday 2
+            if (fri2 != ""):
+                sql = sql + ", employee_hours_fri2=" + fri2
+            else:
+                sql = sql + ", employee_hours_fri2=0"
+            # Saturday 2
+            if (sat2 != ""):
+                sql = sql + ", employee_hours_sat2=" + sat2
+            else:
+                sql = sql + ", employee_hours_sat2=0"
+            # Sunday 2
+            if (sun2 != ""):
+                sql = sql + ", employee_hours_sun2=" + sun2 + ";"
+            else:
+                sql = sql + ", employee_hours_sun2=0;"
+            print(sql)
+            django.db.connection.cursor().execute(sql)
+            messages = ["Hours logged successfully!"]
+
+    context = {
+        'messages': messages
+    }
+    return render(request, 'DB3450Repo/employeeHoursAdd.html', context)
