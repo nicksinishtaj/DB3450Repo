@@ -21,6 +21,17 @@
             </ul>
 
         {% endfor %}
+        
+        <div>
+            <p> Enter item name and quantity to remove</p>
+            <form method="GET">
+                <textarea name='inventory_item_name_delete' cols="10" rows="1"></textarea>
+                <br/>
+                <textarea name='quantity_delete' cols="10" rows="1"></textarea>
+                <br/>
+                <input type="submit" value="Submit"/>
+            </form>
+        </div>
     </div>  
 </body>
 </html>

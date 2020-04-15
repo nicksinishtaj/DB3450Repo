@@ -6,10 +6,12 @@ from DB3450Repo.models import EmployeePermission
 from DB3450Repo.models import Employee
 from DB3450Repo.models import Permission
 from DB3450Repo.models import Project
+from DB3450Repo.models import ProjectInventory
 from DB3450Repo.models import SupplierCompany
 from DB3450Repo.models import SupplierContact
 from datetime import date
 from django.db import connection
+from decimal import Decimal
     
 
 def index(request):
@@ -505,14 +507,44 @@ def projectEmployees_view(request):
 def projectInventory_view(request):
     project_id_int = request.session.get('project_id')
     cursor = connection.cursor()
+
+    # Despite this being a delete method, we're really updating the quantity value in project_inventory
+    if request.GET.get('inventory_item_name_delete'):
+        inventory_name_delete = request.GET['inventory_item_name_delete']
+        quantity_amount_delete = request.GET['quantity_delete']
+        quantity_amount_delete_int = int(quantity_amount_delete)
+
+        # Match inventory name with inventory id
+        project_inv_query_set = ProjectInventory.objects.raw('SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(inventory_name = inventory_name_delete)
+
+        for inventoryItem in project_inv_query_set:
+            # Get match for inventory name to inventory id and item in correct project
+            if((inventoryItem.project_id == project_id_int) and (inventoryItem.inventory == inventory_match)):
+                # Perform check that quantity doesn't already equal 0, else decrease quantity of object in project_inv_query_set until 0
+                if (inventoryItem.quantity == 0):
+                    # Do nothing; nothing should change
+                    print("This won't work, silly goose!")
+                else:
+                    inventoryItem.quantity -= quantity_amount_delete_int
+                    if (inventoryItem.quantity < 0):
+                        # Prevent under 0 errors
+                        inventoryItem.quantity = 0
+                    # Now, need to update DB with this info
+                    cursor.execute("""UPDATE project_inventory 
+                                      SET quantity = %s
+                                      WHERE project_id = %s
+                                      AND inventory_id = %s
+                                      """, [inventoryItem.quantity, project_id_int, inventory_match.inventory_id])
+    # Standard inventory display
     cursor.execute("""SELECT inventory_name, inventory_description, quantity
                       FROM project_inventory, inventory
                       WHERE project_inventory.project_id = %s
                       AND project_inventory.inventory_id = inventory.inventory_id;
                    """, [project_id_int])
+
     query_set_append = cursor.fetchall()
     cursor.close()
-
     return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
 
 def projectPurchases_view(request):
