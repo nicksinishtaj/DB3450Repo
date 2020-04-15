@@ -119,4 +119,10 @@ urlpatterns = [
     # Gets information for new customer contact and puts it into the system
     path('customerContactAdd', views.customerContactAdd_view,
          name='customerContactAdd'),
+    # Get a list of employees managed by a given employee
+    path('employeeEmployeesManaged', views.employeeEmployeesManaged_view,
+         name='employeeEmployeesManaged'),
+    # Get a list of customers managed by a given employee
+    path('employeeCustomersManaged', views.employeeCustomersManaged_view,
+         name='employeeCustomersManaged'),
 ]

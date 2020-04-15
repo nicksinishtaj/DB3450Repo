@@ -6,9 +6,10 @@ from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from DB3450Repo.models import (Employee, EmployeeHours, EmployeePermission,
-                               Inventory, InventorySupplier, Permission,
-                               Project, ProjectInventory, SupplierCompany,
+from DB3450Repo.models import (CustomerCompany, Employee, EmployeeHours,
+                               EmployeePermission, Inventory,
+                               InventorySupplier, Permission, Project,
+                               ProjectInventory, SupplierCompany,
                                SupplierContact)
 
 
@@ -586,7 +587,7 @@ def projectBudget_view(request):
                       GROUP BY EMPLOYEE_ID;
                    """, [project_id_int])
     employeeCostInformation = cursor.fetchall()
-    
+
     context = {
         'budgetResults': query_set_append,
         'purchaseProjectInfo': purchaseProjectInformation,
@@ -625,8 +626,10 @@ def projectInventory_view(request):
         quantity_amount_delete_int = int(quantity_amount_delete)
 
         # Match inventory name with inventory id
-        project_inv_query_set = ProjectInventory.objects.raw('SELECT * FROM project_inventory')
-        inventory_match = Inventory.objects.get(inventory_name=inventory_name_delete)
+        project_inv_query_set = ProjectInventory.objects.raw(
+            'SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(
+            inventory_name=inventory_name_delete)
 
         for inventoryItem in project_inv_query_set:
             # Get match for inventory name to inventory id and item in correct project
@@ -750,7 +753,7 @@ def customerContactUpdate_view(request):
         customer_contact_current = request.GET('customer_contact_add_current')
         cursor = connection.cursor()
         cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_email = %s,customer_contact_lname = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [
-                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_company_email, customer_contact_tel, customer_contact_role, customer_contact_current, customer_contact_id_int, customer_id_int])
+                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_current, customer_contact_id_int, customer_id_int])
         connection.commit()
         cursor.close()
 
@@ -1086,3 +1089,33 @@ def employeeHoursEditSelect_view(request):
         'messages': messages
     }
     return render(request, 'DB3450Repo/employeeHoursEditSelect.html', context)
+
+
+def employeeEmployeesManaged_view(request):
+    employee_id_request = request.GET.get('employee_id')
+    print(employee_id_request)
+
+    query_results = []
+    if (employee_id_request != None and employee_id_request != ""):
+        query_results = Employee.objects.raw(
+            'SELECT * FROM employee WHERE employee_manager_id=' + employee_id_request + ";")
+
+    context = {
+        'employees': query_results
+    }
+    return render(request, 'DB3450Repo/employeeEmployeesManaged.html', context)
+
+
+def employeeCustomersManaged_view(request):
+    employee_id_request = request.GET.get('employee_id')
+    print(employee_id_request)
+
+    query_results = []
+    if (employee_id_request != None and employee_id_request != ""):
+        query_results = CustomerCompany.objects.raw(
+            'SELECT * FROM customer_company WHERE employee_id=' + employee_id_request + ";")
+
+    context = {
+        'customers': query_results
+    }
+    return render(request, 'DB3450Repo/employeeCustomersManaged.html', context)
