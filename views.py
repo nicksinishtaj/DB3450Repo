@@ -456,9 +456,8 @@ def employeePermissionAfterDelete_view(request):
     }
     return render(request, 'DB3450Repo/employeePermissionAfterDelete.html', context)
 
-ef employeeHoursQuery_view(request):
+def employeeHoursQuery_view(request):
     return render(request, 'DB3450Repo/employeeHoursQuery.html')
-
 
 def employeeHoursDetails_view(request):
     employee_id_request = request.GET['employee_id']
