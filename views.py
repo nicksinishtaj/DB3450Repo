@@ -11,6 +11,12 @@ from datetime import date
 from django.db import connection
 import django
 from datetime import datetime
+from DB3450Repo.models import ProjectInventory
+from DB3450Repo.models import SupplierCompany
+from DB3450Repo.models import SupplierContact
+from datetime import date
+from django.db import connection
+from decimal import Decimal
 
 
 def index(request):
@@ -23,6 +29,23 @@ def inventory_view(request):
         'object_instance': query_set
     }
     return render(request, 'DB3450Repo/inventory.html', context)
+
+
+def employeePurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('employee_info_id'):
+        employee_id = request.GET['employee_info_id']
+        employee_id_int = int(employee_id)
+        cursor = connection.cursor()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                          FROM purchase, inventory
+                          WHERE purchase.EMPLOYEE_ID = %s
+                          AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                        """, [employee_id_int])
+        query_set_append = cursor.fetchall()
+        cursor.close()
+    print(query_set_append)
+    return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
 
 
 def employeePermission_view(request):
@@ -71,6 +94,7 @@ def employeePermissionDetails_view(request):
         'employee_object_instance': employee_query_set_append,
         'permission_object_instance': permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
 
 
@@ -90,6 +114,7 @@ def employeePermissionAdd_view(request):
         'employee_object_instance': employee_query_set_append,
         'permission_object_instance': permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
 
 
@@ -141,6 +166,7 @@ def employeePermissionAfterAdd_view(request):
         'employee_object_instance': employee_query_set_append,
         'permission_object_instance': permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermission.html', context)
 
 
@@ -160,6 +186,7 @@ def employeePermissionDelete_view(request):
         'employee_object_instance': employee_query_set_append,
         'permission_object_instance': permission_query_set_append
     }
+
     return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
 
 
@@ -272,6 +299,26 @@ def inventoryAfterUpdate_view(request):
     }
 
     return render(request, 'DB3450Repo/inventoryAfterUpdate.html', context)
+
+
+def inventoryPurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('inventory_info_id'):
+        inventory_id = request.GET['inventory_info_id']
+        inventory_id_int = int(inventory_id)
+        cursor = connection.cursor()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                        FROM purchase, inventory
+                        WHERE inventory.INVENTORY_ID = %s
+                        AND inventory.INVENTORY_ID = purchase.INVENTORY_ID;
+                        """, [inventory_id_int])
+        query_set_append = cursor.fetchall()
+        cursor.close()
+
+    context = {
+        'invPurchInfo': query_set_append
+    }
+    return render(request, 'DB3450Repo/inventoryPurchaseInfo.html', context)
 
 
 def inventorySupplierAdd_view(request):
@@ -463,6 +510,25 @@ def supplierAfterAddOrUpdate_view(request):
     return render(request, 'DB3450Repo/supplierAfterAddOrUpdate.html', context)
 
 
+def projectadd_view(request):
+    if request.GET.get('project_add_id'):
+        project_id = request.GET['project_add_id']
+        project_id_int = int(project_id)
+        project_status = request.GET['project_add_status']
+        project_name = request.GET['project_add_name']
+        project_budget = request.GET['project_add_budget']
+        project_budget_dec = float(project_budget)
+        customer_company_id = request.GET['cus_comp_add_id']
+        customer_company_id_int = int(customer_company_id)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO project VALUES(%s,%s,%s,%s,%s)", [
+                       project_id_int, project_status, project_name, project_budget_dec, customer_company_id_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/projectAdd.html')
+
+
 def projectBaseInfo_view(request):
     query_set_append = []
     if request.GET.get('project_id'):
@@ -516,7 +582,148 @@ def projectEmployees_view(request):
 
 
 def projectInventory_view(request):
-    return render(request, 'DB3450Repo/projectInventory.html')
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+
+    # Despite this being a delete method, we're really updating the quantity value in project_inventory
+    if request.GET.get('inventory_item_name_delete'):
+        inventory_name_delete = request.GET['inventory_item_name_delete']
+        quantity_amount_delete = request.GET['quantity_delete']
+        quantity_amount_delete_int = int(quantity_amount_delete)
+
+        # Match inventory name with inventory id
+        project_inv_query_set = ProjectInventory.objects.raw(
+            'SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(
+            inventory_name=inventory_name_delete)
+
+        for inventoryItem in project_inv_query_set:
+            # Get match for inventory name to inventory id and item in correct project
+            if((inventoryItem.project_id == project_id_int) and (inventoryItem.inventory == inventory_match)):
+                # Perform check that quantity doesn't already equal 0, else decrease quantity of object in project_inv_query_set until 0
+                if (inventoryItem.quantity == 0):
+                    # Do nothing; nothing should change
+                    print("This won't work, silly goose!")
+                else:
+                    inventoryItem.quantity -= quantity_amount_delete_int
+                    if (inventoryItem.quantity < 0):
+                        # Prevent under 0 errors
+                        inventoryItem.quantity = 0
+                    # Now, need to update DB with this info
+                    cursor.execute("""UPDATE project_inventory 
+                                      SET quantity = %s
+                                      WHERE project_id = %s
+                                      AND inventory_id = %s
+                                      """, [inventoryItem.quantity, project_id_int, inventory_match.inventory_id])
+    # Standard inventory display
+    cursor.execute("""SELECT inventory_name, inventory_description, quantity
+                      FROM project_inventory, inventory
+                      WHERE project_inventory.project_id = %s
+                      AND project_inventory.inventory_id = inventory.inventory_id;
+                   """, [project_id_int])
+
+    query_set_append = cursor.fetchall()
+    cursor.close()
+    return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
+
+
+def projectPurchases_view(request):
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                       FROM purchase, inventory
+                       WHERE purchase.PROJECT_ID = %s
+                       AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                    """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close()
+
+    return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
+
+
+def supplierContactUpdate_view(request):
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactUpdate.html', context)
+
+
+def supplierContactAfterUpdate_view(request):
+    id_req = request.GET['supplier_contact_id']
+    id2_req = request.GET['supplier_id']
+    fname_req = request.GET['supplier_contact_fname']
+    lname_req = request.GET['supplier_contact_lname']
+    email_req = request.GET['supplier_contact_email']
+    tel_req = request.GET['supplier_contact_tel']
+    role_req = request.GET['supplier_contact_role']
+    current_req = request.GET['supplier_contact_current']
+    id_req_int = 0
+    validateSupplier = None
+
+    if(id_req is not None and id_req != ''):
+        id_req_int = int(id_req)
+        id2_req_int = int(id2_req)
+        validateSupplier = SupplierContact.objects.get(
+            supplier_contact_id=id_req_int)
+    else:
+        validateSupplier = None
+
+    if(validateSupplier is not None):
+        cursor = connection.cursor()
+        cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [
+                       fname_req, lname_req, email_req, tel_req, role_req, current_req])
+        connection.commit()
+
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
+
+
+def customerContactAdd_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        cus_con_add_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        cus_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO customer_contact VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", [
+                       cus_con_add_id_int, cus_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_current])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactAdd.html')
+
+
+def customerContactUpdate_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        customer_contact_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        customer_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_email = %s,customer_contact_lname = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [
+                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_company_email, customer_contact_tel, customer_contact_role, customer_contact_current, customer_contact_id_int, customer_id_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactUpdate.html')
 
 
 def employeeHoursQuery_view(request):

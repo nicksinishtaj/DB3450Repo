@@ -527,8 +527,14 @@ INSERT INTO construction_company.project_inventory VALUES
 (21, 10, 1),
 (22, 10, 1),
 (25, 10, 1),
+(21, 4, 2),
+(22, 5, 2),
+(23, 5, 2),
+(24, 6, 2),
+(25, 2, 2),
 (23, 100, 3),
-(24, 15, 3);
+(24, 15, 3),
+(21, 2, 4);
 
 INSERT INTO construction_company.supplier_company (SUPPLIER_COMPANY_NAME, SUPPLIER_COMPANY_STREET1, SUPPLIER_COMPANY_CITY, SUPPLIER_COMPANY_STATE, SUPPLIER_COMPANY_ZIP) VALUES
 ('Home Depot', '123 Squirrel Rd', 'Rochester', 'MI', 48306),
@@ -666,6 +672,16 @@ EMPLOYEE_HOURS_THR2 = 0,
 EMPLOYEE_HOURS_FRI2 = 8,
 EMPLOYEE_HOURS_SAT2 = 0; 
 
+-- Add purchases
+INSERT INTO purchase(PROJECT_ID, INVENTORY_ID, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE, EMPLOYEE_ID) VALUES
+	(1, 21, 10, 50.59, '2019-05-14', 2),
+    (1, 22, 10, 40.32, '2019-05-14', 2),
+	(1, 25, 10, 12.35, '2019-05-14', 2),
+    (2, 23, 5, 30.00, '2019-07-23', 3),
+    (2, 24, 6, 24.50, '2019-07-23', 3),
+    (3, 23, 100, 600.00, '2020-01-18', 1),
+    (3, 24, 15, 61.25, '2020-01-18', 4),
+    (4, 21, 2, 10.12, '2019-06-07', 5);
 
 
 

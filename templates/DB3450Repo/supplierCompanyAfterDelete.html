@@ -1,0 +1,64 @@
+@@ -0,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Construction</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Supplier</h1>
+        <p>Supplier Company Name</p>
+        <br/>
+        <div class="row">
+            <div class="col">
+                <h1>Supplier Company Name</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_name}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Supplier Street Address</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_street1}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Alternative Address</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_street2}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>City</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_city}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>State</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_state}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Zip Code</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_zip}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Notes</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_notes}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

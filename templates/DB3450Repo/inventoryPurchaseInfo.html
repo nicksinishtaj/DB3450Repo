@@ -9,15 +9,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>Project Budgetary Information</h1>
+        <h1>Inventory Purchase Information</h1>
 
-        {% for item in budgetResults %}
-           <label>Project Budget: </label> {{item.project_budget}}
+        <form method="GET">
+            <textarea name='inventory_info_id' cols="10" rows="1"></textarea>
+            <br/>
+            <input type="submit" value="Submit"/>
+        </form>
+        <br/>
+
+        {% for item in invPurchInfo %}
+            <ul>
+                <li>Item Name: {{item.0}}</li>
+                <li>Purchase Date: {{item.3}}</li>
+                <li>Purchase Quantity: {{item.1}} piece(s)</li>
+                <li>Purchase Price: ${{item.2}}</li>
+            </ul>
         {% endfor %}
-
-        <p> See only purchase information:</p>
-            <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectPurchases">Project Purchases</a>
-
     </div>
 </body>
 </html>
