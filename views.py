@@ -1,22 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from DB3450Repo.models import Inventory
-from DB3450Repo.models import InventorySupplier
-from DB3450Repo.models import EmployeePermission
-from DB3450Repo.models import Employee
-from DB3450Repo.models import Permission
-from DB3450Repo.models import Project
-from DB3450Repo.models import EmployeeHours, SupplierCompany
-from datetime import date
-from django.db import connection
-import django
-from datetime import datetime
-from DB3450Repo.models import ProjectInventory
-from DB3450Repo.models import SupplierCompany
-from DB3450Repo.models import SupplierContact
-from datetime import date
-from django.db import connection
+from datetime import date, datetime
 from decimal import Decimal
+
+import django
+from django.db import connection
+from django.http import HttpResponse
+from django.shortcuts import render
+
+from DB3450Repo.models import (Employee, EmployeeHours, EmployeePermission,
+                               Inventory, InventorySupplier, Permission,
+                               Project, ProjectInventory, SupplierCompany,
+                               SupplierContact)
 
 
 def index(request):
@@ -46,6 +39,12 @@ def employeePurchaseInfo_view(request):
         cursor.close()
     print(query_set_append)
     return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
+
+
+<< << << < HEAD
+
+== == == =
+>>>>>> > master
 
 
 def employeePermission_view(request):
@@ -299,6 +298,26 @@ def inventoryAfterUpdate_view(request):
     }
 
     return render(request, 'DB3450Repo/inventoryAfterUpdate.html', context)
+
+
+def inventoryPurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('inventory_info_id'):
+        inventory_id = request.GET['inventory_info_id']
+        inventory_id_int = int(inventory_id)
+        cursor = connection.cursor()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                        FROM purchase, inventory
+                        WHERE inventory.INVENTORY_ID = %s
+                        AND inventory.INVENTORY_ID = purchase.INVENTORY_ID;
+                        """, [inventory_id_int])
+        query_set_append = cursor.fetchall()
+        cursor.close()
+
+    context = {
+        'invPurchInfo': query_set_append
+    }
+    return render(request, 'DB3450Repo/inventoryPurchaseInfo.html', context)
 
 
 def inventoryPurchaseInfo_view(request):
@@ -592,6 +611,11 @@ def projectInventory_view(request):
         quantity_amount_delete_int = int(quantity_amount_delete)
 
         # Match inventory name with inventory id
+        project_inv_query_set = ProjectInventory.objects.raw(
+            'SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(
+            inventory_name=inventory_name_delete)
+
         project_inv_query_set = ProjectInventory.objects.raw(
             'SELECT * FROM project_inventory')
         inventory_match = Inventory.objects.get(
