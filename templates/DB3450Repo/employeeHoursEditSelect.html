@@ -18,14 +18,16 @@
   </head>
   <body>
     <div class="container">
-      <h1>View Logged Employee Hours</h1>
-
-      <form action="{% url 'employeeHoursDetails' %}">
+      <h1>Update Logged Employee Hours</h1>
+      {% for item in messages%}
+      <p>{{item}}</p>
+      {% endfor %}
+      <form action="{% url 'employeeHoursEdit' %}">
         <p>Enter employee ID:</p>
         <textarea name="employee_id" cols="10" rows="1"></textarea>
         <p>Enter project ID:</p>
         <textarea name="project_id" cols="10" rows="1"></textarea><br />
-        <p>Enter the first day of the pay period:</p>
+        <p>Enter the first day of the pay period (YYYY-MM-DD):</p>
         <textarea name="start_date" cols="10" rows="1"></textarea><br />
         <input type="submit" value="Submit" />
       </form>

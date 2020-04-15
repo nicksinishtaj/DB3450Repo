@@ -79,4 +79,10 @@ urlpatterns = [
          name='employeeHoursDetails'),
     # Add Employee Hours
     path('employeeHoursAdd', views.employeeHoursAdd_view, name='employeeHoursAdd'),
+    # Search employees to update hours
+    path('employeeHoursEditSelect', views.employeeHoursEditSelect_view,
+         name='employeeHoursEditSelect'),
+    # Get employee hours information; comes after employeeHoursQuery
+    path('employeeHoursEdit', views.employeeHoursEdit_view,
+         name='employeeHoursEdit'),
 ]
