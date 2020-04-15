@@ -8,12 +8,19 @@
     <title>Construction</title>
 </head>
 <body>
-    <h1>Project Employee Information</h1>
-    <p> Employees authorized to view the project: </p>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Project Employee Information</h1>
+        <p> Employees authorized to view the project: </p>
 
-    {% for emp in projectEmployees %}
-        <br/>
-        Employee Name: {{emp.0}} {{emp.1}}
-    {% endfor %}
+        {% for emp in projectEmployees %}
+            <br/>
+            Employee Name: {{emp.0}} {{emp.1}}
+        {% endfor %}
+    </div>
 </body>
 </html>
