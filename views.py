@@ -11,10 +11,12 @@ from DB3450Repo.models import (Employee, EmployeeHours, EmployeePermission,
                                Project, ProjectInventory, SupplierCompany,
                                SupplierContact)
 
-
-def index(request):
+# GENERAL LINK HANDLING
+def home(request):
     return render(request, 'DB3450Repo/home.html')
 
+
+# INVENTORY LINK HANDLING
 
 def inventory_view(request):
     query_set = Inventory.objects.raw('SELECT * FROM inventory')
@@ -22,201 +24,6 @@ def inventory_view(request):
         'object_instance': query_set
     }
     return render(request, 'DB3450Repo/inventory.html', context)
-
-
-def employeePurchaseInfo_view(request):
-    query_set_append = {}
-    if request.GET.get('employee_info_id'):
-        employee_id = request.GET['employee_info_id']
-        employee_id_int = int(employee_id)
-        cursor = connection.cursor()
-        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
-                          FROM purchase, inventory
-                          WHERE purchase.EMPLOYEE_ID = %s
-                          AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
-                        """, [employee_id_int])
-        query_set_append = cursor.fetchall()
-        cursor.close()
-    print(query_set_append)
-    return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
-
-
-def employeePermission_view(request):
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    for employeePermission in query_set:
-        employee_query_set_append.append(employeePermission.employee)
-        permission_query_set_append.append(employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-    return render(request, 'DB3450Repo/employeePermission.html', context)
-
-
-def employeePermissionQuery_view(request):
-    return render(request, 'DB3450Repo/employeePermissionQuery.html')
-
-
-def employeePermissionDetails_view(request):
-    employee_id_request = request.GET['employee_id']
-
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
-
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    validEmployee = Employee.objects.get(employee_id=employee_id_request)
-
-    for employeePermission in query_set:
-        if(employeePermission.employee == validEmployee):
-            employee_query_set_append.append(employeePermission.employee)
-            permission_query_set_append.append(
-                employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-
-    return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
-
-
-def employeePermissionAdd_view(request):
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    for employeePermission in query_set:
-        employee_query_set_append.append(employeePermission.employee)
-        permission_query_set_append.append(employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-
-    return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
-
-
-def employeePermissionAfterAdd_view(request):
-    employee_id = request.GET['employee_id']
-    permission_level = request.GET['permission_level']
-    project_id = request.GET['project_id']
-    employee_permission_start = request.GET['start_date']
-
-    validEmployee = Employee.objects.get(employee_id=employee_id)
-    validPermission = Permission.objects.get(permission_level=permission_level)
-    validProject = Project.objects.get(project_id=project_id)
-
-    query_set_append = []
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    new_query_set = query_set
-    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
-    project_query_set = Project.objects.raw('SELECT * FROM project')
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    x = 0
-
-    for object in query_set:
-        query_set_append.append(object)
-        if(validEmployee == object.employee and validPermission == object.permission_level and validProject == object.project):
-            x += 1
-
-    if(x == 0):
-        newEmployeePermission = EmployeePermission(employee_id=validEmployee.employee_id, permission_level=validPermission,
-                                                   project_id=project_id, employee_permission_start=employee_permission_start)
-        newEmployeePermission.save()
-        new_query_set = EmployeePermission.objects.raw(
-            'SELECT * FROM employee_permission')
-        # EmployeePermission.INSERT('INSERT INTO employee_permission (employee_id, permission_level, project_id, employee_permission_start)' 'VALUES (%s, %s, %s, %s),' [employee_id, permission_level, project_id, employee_permission_start])
-        # new_query_set = EmployeePermission.objects.raw('SELECT * FROM employee_permission')
-
-    employee_query_set_final = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set_final = Permission.objects.raw(
-        'SELECT * FROM permission')
-
-    for employeePermission in new_query_set:
-        employee_query_set_append.append(employeePermission.employee)
-        permission_query_set_append.append(employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-
-    return render(request, 'DB3450Repo/employeePermission.html', context)
-
-
-def employeePermissionDelete_view(request):
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    for employeePermission in query_set:
-        employee_query_set_append.append(employeePermission.employee)
-        permission_query_set_append.append(employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-
-    return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
-
-
-def employeePermissionAfterDelete_view(request):
-    employee_id = request.GET['employee_id']
-    permission_level = request.GET['permission_level']
-    project_id = request.GET['project_id']
-    employee_permission_start = date.today()
-
-    validEmployee = Employee.objects.get(employee_id=employee_id)
-    validPermission = Permission.objects.get(permission_level=permission_level)
-    validProject = Project.objects.get(project_id=project_id)
-
-    query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-
-    for employeePermission in query_set:
-        if(employeePermission.employee == validEmployee and employeePermission.permission_level == validPermission and employeePermission.project == validProject):
-            employeePermission.delete()
-
-    new_query_set = EmployeePermission.objects.raw(
-        'SELECT * FROM employee_permission')
-    employee_query_set_final = Employee.objects.raw('SELECT * FROM employee')
-    permission_query_set_final = Permission.objects.raw(
-        'SELECT * FROM permission')
-    employee_query_set_append = []
-    permission_query_set_append = []
-
-    for employeePermission in new_query_set:
-        employee_query_set_append.append(employeePermission.employee)
-        permission_query_set_append.append(employeePermission.permission_level)
-
-    context = {
-        'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
-    }
-    return render(request, 'DB3450Repo/employeePermissionAfterDelete.html', context)
 
 
 def inventoryQuery_view(request):
@@ -238,7 +45,7 @@ def inventoryDetails_view(request):
 
     return render(request, 'DB3450Repo/inventoryDetails.html', context)
 
-
+# Add general inventory item
 def inventoryAdd_view(request):
     query_set = Inventory.objects.raw('SELECT * FROM inventory')
 
@@ -247,7 +54,7 @@ def inventoryAdd_view(request):
     }
     return render(request, 'DB3450Repo/inventoryAdd.html', context)
 
-
+# See results from adding inventory item
 def inventoryAfterAdd_view(request):
     inventory_name_request = request.GET['inventory_name']
     inventory_description_request = request.GET['inventory_description']
@@ -292,26 +99,6 @@ def inventoryAfterUpdate_view(request):
     }
 
     return render(request, 'DB3450Repo/inventoryAfterUpdate.html', context)
-
-
-def inventoryPurchaseInfo_view(request):
-    query_set_append = {}
-    if request.GET.get('inventory_info_id'):
-        inventory_id = request.GET['inventory_info_id']
-        inventory_id_int = int(inventory_id)
-        cursor = connection.cursor()
-        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
-                        FROM purchase, inventory
-                        WHERE inventory.INVENTORY_ID = %s
-                        AND inventory.INVENTORY_ID = purchase.INVENTORY_ID;
-                        """, [inventory_id_int])
-        query_set_append = cursor.fetchall()
-        cursor.close()
-
-    context = {
-        'invPurchInfo': query_set_append
-    }
-    return render(request, 'DB3450Repo/inventoryPurchaseInfo.html', context)
 
 
 def inventoryPurchaseInfo_view(request):
@@ -474,290 +261,202 @@ def inventorySupplierAfterDelete_view(request):
 
     return render(request, 'DB3450Repo/inventorySupplierAfterDelete.html', context)
 
+# EMPLOYEE LINK HANDLING
+def employeeLanding_view(request):
+    return render(request, 'DB3450Repo/employeeLanding.html')
 
-def supplierAddOrUpdate_view(request):
-    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
-
-    context = {
-        'object_instance': query_set,
-    }
-    return render(request, 'DB3450Repo/supplierAddOrUpdate.html', context)
-
-
-def supplierAfterAddOrUpdate_view(request):
-    id_req = request.GET['supplier_company_id']
-    name_req = request.GET['supplier_company_name']
-    streetOne_req = request.GET['supplier_company_streetOne']
-    streetTwo_req = request.GET['supplier_company_streetTwo']
-    city_req = request.GET['supplier_company_city']
-    state_req = request.GET['supplier_company_state']
-    zip_req = request.GET['supplier_company_zip']
-    notes_req = request.GET['supplier_company_notes']
-    id_req_int = 0
-    validateSupplier = None
-
-    if(id_req is not None and id_req != ''):
-        id_req_int = int(id_req)
-        validateSupplier = SupplierCompany.objects.get(
-            supplier_company_id=id_req_int)
-    else:
-        validateSupplier = None
-
-    if(validateSupplier is not None):
+def employeePurchaseInfo_view(request):
+    query_set_append = {}
+    if request.GET.get('employee_info_id'):
+        employee_id = request.GET['employee_info_id']
+        employee_id_int = int(employee_id)
         cursor = connection.cursor()
-        cursor.execute('UPDATE supplier_company SET supplier_company_name = %s, supplier_company_street1 = %s, supplier_company_street2 = %s, supplier_company_city = %s, supplier_company_state = %s, supplier_company_zip = %s, supplier_company_notes = %s WHERE SUPPLIER_COMPANY_ID = %s', [
-                       name_req, streetOne_req, streetTwo_req, city_req, state_req, zip_req, notes_req, id_req_int])
-        connection.commit()
-
-    if(validateSupplier is None):
-        cursor = connection.cursor()
-        cursor.execute('INSERT INTO supplier_company (supplier_company_name, supplier_company_street1, supplier_company_street2, supplier_company_city, supplier_company_state, supplier_company_zip, supplier_company_notes) VALUES (%s,%s,%s,%s,%s,%s,%s)', [
-                       name_req, streetOne_req, streetTwo_req, city_req, state_req, zip_req, notes_req])
-        connection.commit()
-
-    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
-
-    context = {
-        'object_instance': query_set,
-    }
-    return render(request, 'DB3450Repo/supplierAfterAddOrUpdate.html', context)
-
-
-def projectadd_view(request):
-    if request.GET.get('project_add_id'):
-        project_id = request.GET['project_add_id']
-        project_id_int = int(project_id)
-        project_status = request.GET['project_add_status']
-        project_name = request.GET['project_add_name']
-        project_budget = request.GET['project_add_budget']
-        project_budget_dec = float(project_budget)
-        customer_company_id = request.GET['cus_comp_add_id']
-        customer_company_id_int = int(customer_company_id)
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO project VALUES(%s,%s,%s,%s,%s)", [
-                       project_id_int, project_status, project_name, project_budget_dec, customer_company_id_int])
-        connection.commit()
+        cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                          FROM purchase, inventory
+                          WHERE purchase.EMPLOYEE_ID = %s
+                          AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                        """, [employee_id_int])
+        query_set_append = cursor.fetchall()
         cursor.close()
+    print(query_set_append)
+    return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
 
-    return render(request, 'DB3450Repo/projectAdd.html')
+def employeePermission_view(request):
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+    employee_query_set_append = []
+    permission_query_set_append = []
 
-
-def projectBaseInfo_view(request):
-    query_set_append = []
-    if request.GET.get('project_id'):
-        project_id = request.GET['project_id']
-        project_id_int = int(project_id)
-        # Creating session variable
-        request.session['project_id'] = project_id_int
-        query_set = Project.objects.raw('SELECT * FROM project')
-        for object in query_set:
-            if(project_id_int == object.project_id):
-                query_set_append.append(object)
+    for employeePermission in query_set:
+        employee_query_set_append.append(employeePermission.employee)
+        permission_query_set_append.append(employeePermission.permission_level)
 
     context = {
-        'project_details': query_set_append
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
+    }
+    return render(request, 'DB3450Repo/employeePermission.html', context)
+
+def employeePermissionAdd_view(request):
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+    employee_query_set_append = []
+    permission_query_set_append = []
+
+    for employeePermission in query_set:
+        employee_query_set_append.append(employeePermission.employee)
+        permission_query_set_append.append(employeePermission.permission_level)
+
+    context = {
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
     }
 
-    return render(request, 'DB3450Repo/projectBaseInfo.html', context)
+    return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
 
 
-def projectBudget_view(request):
-    project_id_int = request.session.get('project_id')
+def employeePermissionAfterAdd_view(request):
+    employee_id = request.GET['employee_id']
+    permission_level = request.GET['permission_level']
+    project_id = request.GET['project_id']
+    employee_permission_start = request.GET['start_date']
+
+    validEmployee = Employee.objects.get(employee_id=employee_id)
+    validPermission = Permission.objects.get(permission_level=permission_level)
+    validProject = Project.objects.get(project_id=project_id)
+
     query_set_append = []
-    query_set = Project.objects.raw('SELECT * FROM project')
-    # Get budget total for project
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    new_query_set = query_set
+    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+    project_query_set = Project.objects.raw('SELECT * FROM project')
+    employee_query_set_append = []
+    permission_query_set_append = []
+
+    x = 0
+
     for object in query_set:
-        if(project_id_int == object.project_id):
-            query_set_append.append(object)
+        query_set_append.append(object)
+        if(validEmployee == object.employee and validPermission == object.permission_level and validProject == object.project):
+            x += 1
 
-    # Get purchase information for the project
-    cursor = connection.cursor()
-    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_TOTAL, PURCHASE_QUANTITY, PURCHASE_DATE
-                      FROM purchase JOIN inventory using (INVENTORY_ID)
-                      WHERE project_id = %s;
-                   """, [project_id_int])
-    purchaseProjectInformation = cursor.fetchall()
+    if(x == 0):
+        newEmployeePermission = EmployeePermission(employee_id=validEmployee.employee_id, permission_level=validPermission,
+                                                   project_id=project_id, employee_permission_start=employee_permission_start)
+        newEmployeePermission.save()
+        new_query_set = EmployeePermission.objects.raw(
+            'SELECT * FROM employee_permission')
+        # EmployeePermission.INSERT('INSERT INTO employee_permission (employee_id, permission_level, project_id, employee_permission_start)' 'VALUES (%s, %s, %s, %s),' [employee_id, permission_level, project_id, employee_permission_start])
+        # new_query_set = EmployeePermission.objects.raw('SELECT * FROM employee_permission')
 
-    # Get employee hours information
-    cursor.execute("""SELECT EMPLOYEE_ID, EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_LAST, SUM(EMPLOYEE_HOURS_RATE * (EMPLOYEE_HOURS_SUN1 + EMPLOYEE_HOURS_MON1 + EMPLOYEE_HOURS_TUE1 + EMPLOYEE_HOURS_WED1 + EMPLOYEE_HOURS_THR1 + EMPLOYEE_HOURS_FRI1 + EMPLOYEE_HOURS_SAT1 + 
-                      EMPLOYEE_HOURS_SUN2 + EMPLOYEE_HOURS_MON2 + EMPLOYEE_HOURS_TUE2 + EMPLOYEE_HOURS_WED2 + EMPLOYEE_HOURS_THR2 + EMPLOYEE_HOURS_FRI2 + EMPLOYEE_HOURS_SAT2))
-                      FROM employee JOIN employee_hours USING (EMPLOYEE_ID)
-                      WHERE project_id = %s
-                      GROUP BY EMPLOYEE_ID;
-                   """, [project_id_int])
-    employeeCostInformation = cursor.fetchall()
-    
-    context = {
-        'budgetResults': query_set_append,
-        'purchaseProjectInfo': purchaseProjectInformation,
-        'employeeCostInfo': employeeCostInformation,
-    }
+    employee_query_set_final = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set_final = Permission.objects.raw(
+        'SELECT * FROM permission')
 
-    return render(request, 'DB3450Repo/projectBudget.html', context)
-
-
-def projectEmployees_view(request):
-    project_id_int = request.session.get('project_id')
-    cursor = connection.cursor()
-    # Despite what is says here, it gets the first name first and last name second
-    cursor.execute("""SELECT employee_name_last, employee_name_first
-                      FROM employee  
-                      WHERE employee_id in (
-                          SELECT employee_id
-                          FROM employee_permission
-                          WHERE project_id = %s
-                      );
-                        """, [project_id_int])
-    query_set_append = cursor.fetchall()
-    cursor.close()
-
-    return render(request, 'DB3450Repo/projectEmployees.html', {'projectEmployees': query_set_append})
-
-
-def projectInventory_view(request):
-    project_id_int = request.session.get('project_id')
-    cursor = connection.cursor()
-
-    # Despite this being a delete method, we're really updating the quantity value in project_inventory
-    if request.GET.get('inventory_item_name_delete'):
-        inventory_name_delete = request.GET['inventory_item_name_delete']
-        quantity_amount_delete = request.GET['quantity_delete']
-        quantity_amount_delete_int = int(quantity_amount_delete)
-
-        # Match inventory name with inventory id
-        project_inv_query_set = ProjectInventory.objects.raw('SELECT * FROM project_inventory')
-        inventory_match = Inventory.objects.get(inventory_name=inventory_name_delete)
-
-        for inventoryItem in project_inv_query_set:
-            # Get match for inventory name to inventory id and item in correct project
-            if((inventoryItem.project_id == project_id_int) and (inventoryItem.inventory == inventory_match)):
-                # Perform check that quantity doesn't already equal 0, else decrease quantity of object in project_inv_query_set until 0
-                if (inventoryItem.quantity == 0):
-                    # Do nothing; nothing should change
-                    print("This won't work, silly goose!")
-                else:
-                    inventoryItem.quantity -= quantity_amount_delete_int
-                    if (inventoryItem.quantity < 0):
-                        # Prevent under 0 errors
-                        inventoryItem.quantity = 0
-                    # Now, need to update DB with this info
-                    cursor.execute("""UPDATE project_inventory 
-                                      SET quantity = %s
-                                      WHERE project_id = %s
-                                      AND inventory_id = %s
-                                      """, [inventoryItem.quantity, project_id_int, inventory_match.inventory_id])
-    # Standard inventory display
-    cursor.execute("""SELECT inventory_name, inventory_description, quantity
-                      FROM project_inventory, inventory
-                      WHERE project_inventory.project_id = %s
-                      AND project_inventory.inventory_id = inventory.inventory_id;
-                   """, [project_id_int])
-
-    query_set_append = cursor.fetchall()
-    cursor.close()
-    return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
-
-
-def projectPurchases_view(request):
-    project_id_int = request.session.get('project_id')
-    cursor = connection.cursor()
-    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
-                       FROM purchase, inventory
-                       WHERE purchase.PROJECT_ID = %s
-                       AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
-                    """, [project_id_int])
-    query_set_append = cursor.fetchall()
-    cursor.close()
-
-    return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
-
-
-def supplierContactUpdate_view(request):
-    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    for employeePermission in new_query_set:
+        employee_query_set_append.append(employeePermission.employee)
+        permission_query_set_append.append(employeePermission.permission_level)
 
     context = {
-        'object_instance': query_set,
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
     }
-    return render(request, 'DB3450Repo/supplierContactUpdate.html', context)
+
+    return render(request, 'DB3450Repo/employeePermission.html', context)
 
 
-def supplierContactAfterUpdate_view(request):
-    id_req = request.GET['supplier_contact_id']
-    id2_req = request.GET['supplier_id']
-    fname_req = request.GET['supplier_contact_fname']
-    lname_req = request.GET['supplier_contact_lname']
-    email_req = request.GET['supplier_contact_email']
-    tel_req = request.GET['supplier_contact_tel']
-    role_req = request.GET['supplier_contact_role']
-    current_req = request.GET['supplier_contact_current']
-    id_req_int = 0
-    validateSupplier = None
+def employeePermissionQuery_view(request):
+    return render(request, 'DB3450Repo/employeePermissionQuery.html')
 
-    if(id_req is not None and id_req != ''):
-        id_req_int = int(id_req)
-        id2_req_int = int(id2_req)
-        validateSupplier = SupplierContact.objects.get(
-            supplier_contact_id=id_req_int)
-    else:
-        validateSupplier = None
 
-    if(validateSupplier is not None):
-        cursor = connection.cursor()
-        cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [
-                       fname_req, lname_req, email_req, tel_req, role_req, current_req])
-        connection.commit()
+def employeePermissionDetails_view(request):
+    employee_id_request = request.GET['employee_id']
 
-    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+
+    employee_query_set_append = []
+    permission_query_set_append = []
+
+    validEmployee = Employee.objects.get(employee_id=employee_id_request)
+
+    for employeePermission in query_set:
+        if(employeePermission.employee == validEmployee):
+            employee_query_set_append.append(employeePermission.employee)
+            permission_query_set_append.append(
+                employeePermission.permission_level)
 
     context = {
-        'object_instance': query_set,
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
     }
-    return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
+
+    return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
+
+def employeePermissionDelete_view(request):
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    employee_query_set = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+    employee_query_set_append = []
+    permission_query_set_append = []
+
+    for employeePermission in query_set:
+        employee_query_set_append.append(employeePermission.employee)
+        permission_query_set_append.append(employeePermission.permission_level)
+
+    context = {
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
+    }
+
+    return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
 
 
-def customerContactAdd_view(request):
-    if request.GET.get('customer_contact_add_id'):
-        customer_contact_id = request.GET('customer_contact_add_id')
-        cus_con_add_id_int = int(customer_contact_id)
-        customer_id = request.GET('customer_add_id')
-        cus_id_int = int(customer_id)
-        customer_contact_fname = request.GET('customer_contact_add_fname')
-        customer_contact_lname = request.GET('customer_contact_add_lname')
-        customer_contact_email = request.GET('customer_contact_add_email')
-        customer_contact_tel = request.GET('customer_contact_add_tel')
-        customer_contact_role = request.GET('customer_contact_add_role')
-        customer_contact_current = request.GET('customer_contact_add_current')
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO customer_contact VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", [
-                       cus_con_add_id_int, cus_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_current])
-        connection.commit()
-        cursor.close()
+def employeePermissionAfterDelete_view(request):
+    employee_id = request.GET['employee_id']
+    permission_level = request.GET['permission_level']
+    project_id = request.GET['project_id']
+    employee_permission_start = date.today()
 
-    return render(request, 'DB3450Repo/customerContactAdd.html')
+    validEmployee = Employee.objects.get(employee_id=employee_id)
+    validPermission = Permission.objects.get(permission_level=permission_level)
+    validProject = Project.objects.get(project_id=project_id)
 
+    query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
 
-def customerContactUpdate_view(request):
-    if request.GET.get('customer_contact_add_id'):
-        customer_contact_id = request.GET('customer_contact_add_id')
-        customer_contact_id_int = int(customer_contact_id)
-        customer_id = request.GET('customer_add_id')
-        customer_id_int = int(customer_id)
-        customer_contact_fname = request.GET('customer_contact_add_fname')
-        customer_contact_lname = request.GET('customer_contact_add_lname')
-        customer_contact_email = request.GET('customer_contact_add_email')
-        customer_contact_tel = request.GET('customer_contact_add_tel')
-        customer_contact_role = request.GET('customer_contact_add_role')
-        customer_contact_current = request.GET('customer_contact_add_current')
-        cursor = connection.cursor()
-        cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_email = %s,customer_contact_lname = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [
-                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_company_email, customer_contact_tel, customer_contact_role, customer_contact_current, customer_contact_id_int, customer_id_int])
-        connection.commit()
-        cursor.close()
+    for employeePermission in query_set:
+        if(employeePermission.employee == validEmployee and employeePermission.permission_level == validPermission and employeePermission.project == validProject):
+            employeePermission.delete()
 
-    return render(request, 'DB3450Repo/customerContactUpdate.html')
+    new_query_set = EmployeePermission.objects.raw(
+        'SELECT * FROM employee_permission')
+    employee_query_set_final = Employee.objects.raw('SELECT * FROM employee')
+    permission_query_set_final = Permission.objects.raw(
+        'SELECT * FROM permission')
+    employee_query_set_append = []
+    permission_query_set_append = []
 
+    for employeePermission in new_query_set:
+        employee_query_set_append.append(employeePermission.employee)
+        permission_query_set_append.append(employeePermission.permission_level)
 
-def employeeHoursQuery_view(request):
+    context = {
+        'employee_object_instance': employee_query_set_append,
+        'permission_object_instance': permission_query_set_append
+    }
+    return render(request, 'DB3450Repo/employeePermissionAfterDelete.html', context)
+
+ef employeeHoursQuery_view(request):
     return render(request, 'DB3450Repo/employeeHoursQuery.html')
 
 
@@ -974,7 +673,6 @@ def employeeHoursEdit_view(request):
     else:
         return render(request, 'DB3450Repo/employeeHoursEditSelect.html', {'messages': ["No Timesheet Found with those parameters."]})
 
-
 def employeeHoursEditSelect_view(request):
     employee_id_request = request.GET.get('employee_id')
     project_id_request = request.GET.get('project_id')
@@ -1086,3 +784,291 @@ def employeeHoursEditSelect_view(request):
         'messages': messages
     }
     return render(request, 'DB3450Repo/employeeHoursEditSelect.html', context)
+
+
+# SUPPLIER LINK HANDLING
+def supplierLanding_view(request):
+    return render(request, 'DB3450Repo/supplierLanding.html')
+
+
+def supplierAddOrUpdate_view(request):
+    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierAddOrUpdate.html', context)
+
+
+def supplierAfterAddOrUpdate_view(request):
+    id_req = request.GET['supplier_company_id']
+    name_req = request.GET['supplier_company_name']
+    streetOne_req = request.GET['supplier_company_streetOne']
+    streetTwo_req = request.GET['supplier_company_streetTwo']
+    city_req = request.GET['supplier_company_city']
+    state_req = request.GET['supplier_company_state']
+    zip_req = request.GET['supplier_company_zip']
+    notes_req = request.GET['supplier_company_notes']
+    id_req_int = 0
+    validateSupplier = None
+
+    if(id_req is not None and id_req != ''):
+        id_req_int = int(id_req)
+        validateSupplier = SupplierCompany.objects.get(
+            supplier_company_id=id_req_int)
+    else:
+        validateSupplier = None
+
+    if(validateSupplier is not None):
+        cursor = connection.cursor()
+        cursor.execute('UPDATE supplier_company SET supplier_company_name = %s, supplier_company_street1 = %s, supplier_company_street2 = %s, supplier_company_city = %s, supplier_company_state = %s, supplier_company_zip = %s, supplier_company_notes = %s WHERE SUPPLIER_COMPANY_ID = %s', [
+                       name_req, streetOne_req, streetTwo_req, city_req, state_req, zip_req, notes_req, id_req_int])
+        connection.commit()
+
+    if(validateSupplier is None):
+        cursor = connection.cursor()
+        cursor.execute('INSERT INTO supplier_company (supplier_company_name, supplier_company_street1, supplier_company_street2, supplier_company_city, supplier_company_state, supplier_company_zip, supplier_company_notes) VALUES (%s,%s,%s,%s,%s,%s,%s)', [
+                       name_req, streetOne_req, streetTwo_req, city_req, state_req, zip_req, notes_req])
+        connection.commit()
+
+    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierAfterAddOrUpdate.html', context)
+
+
+def supplierContactUpdate_view(request):
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactUpdate.html', context)
+
+
+def supplierContactAfterUpdate_view(request):
+    id_req = request.GET['supplier_contact_id']
+    id2_req = request.GET['supplier_id']
+    fname_req = request.GET['supplier_contact_fname']
+    lname_req = request.GET['supplier_contact_lname']
+    email_req = request.GET['supplier_contact_email']
+    tel_req = request.GET['supplier_contact_tel']
+    role_req = request.GET['supplier_contact_role']
+    current_req = request.GET['supplier_contact_current']
+    id_req_int = 0
+    validateSupplier = None
+
+    if(id_req is not None and id_req != ''):
+        id_req_int = int(id_req)
+        id2_req_int = int(id2_req)
+        validateSupplier = SupplierContact.objects.get(
+            supplier_contact_id=id_req_int)
+    else:
+        validateSupplier = None
+
+    if(validateSupplier is not None):
+        cursor = connection.cursor()
+        cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [
+                       fname_req, lname_req, email_req, tel_req, role_req, current_req])
+        connection.commit()
+
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
+
+# PROJECT LINK HANDLING
+# Retrieve the project name and status
+def projectBaseInfo_view(request):
+    query_set_append = []
+    if request.GET.get('project_id'):
+        project_id = request.GET['project_id']
+        project_id_int = int(project_id)
+        # Creating session variable
+        request.session['project_id'] = project_id_int
+        query_set = Project.objects.raw('SELECT * FROM project')
+        for object in query_set:
+            if(project_id_int == object.project_id):
+                query_set_append.append(object)
+
+    context = {
+        'project_details': query_set_append
+    }
+
+    return render(request, 'DB3450Repo/projectBaseInfo.html', context)
+
+# Add a new project 
+def projectadd_view(request):
+    if request.GET.get('project_add_id'):
+        project_id = request.GET['project_add_id']
+        project_id_int = int(project_id)
+        project_status = request.GET['project_add_status']
+        project_name = request.GET['project_add_name']
+        project_budget = request.GET['project_add_budget']
+        project_budget_dec = float(project_budget)
+        customer_company_id = request.GET['cus_comp_add_id']
+        customer_company_id_int = int(customer_company_id)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO project VALUES(%s,%s,%s,%s,%s)", [
+                       project_id_int, project_status, project_name, project_budget_dec, customer_company_id_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/projectAdd.html')
+
+# Retrieve the project budget and expenditure information
+def projectBudget_view(request):
+    project_id_int = request.session.get('project_id')
+    query_set_append = []
+    query_set = Project.objects.raw('SELECT * FROM project')
+    # Get budget total for project
+    for object in query_set:
+        if(project_id_int == object.project_id):
+            query_set_append.append(object)
+
+    # Get purchase information for the project
+    cursor = connection.cursor()
+    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_TOTAL, PURCHASE_QUANTITY, PURCHASE_DATE
+                      FROM purchase JOIN inventory using (INVENTORY_ID)
+                      WHERE project_id = %s;
+                   """, [project_id_int])
+    purchaseProjectInformation = cursor.fetchall()
+
+    # Get employee hours information
+    cursor.execute("""SELECT EMPLOYEE_ID, EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_LAST, SUM(EMPLOYEE_HOURS_RATE * (EMPLOYEE_HOURS_SUN1 + EMPLOYEE_HOURS_MON1 + EMPLOYEE_HOURS_TUE1 + EMPLOYEE_HOURS_WED1 + EMPLOYEE_HOURS_THR1 + EMPLOYEE_HOURS_FRI1 + EMPLOYEE_HOURS_SAT1 + 
+                      EMPLOYEE_HOURS_SUN2 + EMPLOYEE_HOURS_MON2 + EMPLOYEE_HOURS_TUE2 + EMPLOYEE_HOURS_WED2 + EMPLOYEE_HOURS_THR2 + EMPLOYEE_HOURS_FRI2 + EMPLOYEE_HOURS_SAT2))
+                      FROM employee JOIN employee_hours USING (EMPLOYEE_ID)
+                      WHERE project_id = %s
+                      GROUP BY EMPLOYEE_ID;
+                   """, [project_id_int])
+    employeeCostInformation = cursor.fetchall()
+    
+    context = {
+        'budgetResults': query_set_append,
+        'purchaseProjectInfo': purchaseProjectInformation,
+        'employeeCostInfo': employeeCostInformation,
+    }
+
+    return render(request, 'DB3450Repo/projectBudget.html', context)
+
+# Retrieve project employee information
+def projectEmployees_view(request):
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    # Despite what is says here, it gets the first name first and last name second
+    cursor.execute("""SELECT employee_name_last, employee_name_first
+                      FROM employee  
+                      WHERE employee_id in (
+                          SELECT employee_id
+                          FROM employee_permission
+                          WHERE project_id = %s
+                      );
+                        """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close()
+
+    return render(request, 'DB3450Repo/projectEmployees.html', {'projectEmployees': query_set_append})
+
+# Retrieve information about inventory items belonging to the project
+def projectInventory_view(request):
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+
+    # Despite this being a delete method, we're really updating the quantity value in project_inventory
+    if request.GET.get('inventory_item_name_delete'):
+        inventory_name_delete = request.GET['inventory_item_name_delete']
+        quantity_amount_delete = request.GET['quantity_delete']
+        quantity_amount_delete_int = int(quantity_amount_delete)
+
+        # Match inventory name with inventory id
+        project_inv_query_set = ProjectInventory.objects.raw('SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(inventory_name=inventory_name_delete)
+
+        for inventoryItem in project_inv_query_set:
+            # Get match for inventory name to inventory id and item in correct project
+            if((inventoryItem.project_id == project_id_int) and (inventoryItem.inventory == inventory_match)):
+                # Perform check that quantity doesn't already equal 0, else decrease quantity of object in project_inv_query_set until 0
+                if (inventoryItem.quantity == 0):
+                    # Do nothing; nothing should change
+                    print("This won't work, silly goose!")
+                else:
+                    inventoryItem.quantity -= quantity_amount_delete_int
+                    if (inventoryItem.quantity < 0):
+                        # Prevent under 0 errors
+                        inventoryItem.quantity = 0
+                    # Now, need to update DB with this info
+                    cursor.execute("""UPDATE project_inventory 
+                                      SET quantity = %s
+                                      WHERE project_id = %s
+                                      AND inventory_id = %s
+                                      """, [inventoryItem.quantity, project_id_int, inventory_match.inventory_id])
+    # Standard inventory display
+    cursor.execute("""SELECT inventory_name, inventory_description, quantity
+                      FROM project_inventory, inventory
+                      WHERE project_inventory.project_id = %s
+                      AND project_inventory.inventory_id = inventory.inventory_id;
+                   """, [project_id_int])
+
+    query_set_append = cursor.fetchall()
+    cursor.close()
+    return render(request, 'DB3450Repo/projectInventory.html', {'projInventory': query_set_append})
+
+# Retrieve information for purchases belonging specifically to a given project
+def projectPurchases_view(request):
+    project_id_int = request.session.get('project_id')
+    cursor = connection.cursor()
+    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_QUANTITY, PURCHASE_TOTAL, PURCHASE_DATE
+                       FROM purchase, inventory
+                       WHERE purchase.PROJECT_ID = %s
+                       AND purchase.INVENTORY_ID = inventory.INVENTORY_ID;
+                    """, [project_id_int])
+    query_set_append = cursor.fetchall()
+    cursor.close()
+
+    return render(request, 'DB3450Repo/projectPurchases.html', {'projPurchases': query_set_append})
+
+
+# CUSTOMER LINK HANDLING
+def customerContactAdd_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        cus_con_add_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        cus_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO customer_contact VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", [
+                       cus_con_add_id_int, cus_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_current])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactAdd.html')
+
+def customerContactUpdate_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        customer_contact_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        customer_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_email = %s,customer_contact_lname = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [
+                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_company_email, customer_contact_tel, customer_contact_role, customer_contact_current, customer_contact_id_int, customer_id_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactUpdate.html')
