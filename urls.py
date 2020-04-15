@@ -52,6 +52,8 @@ urlpatterns = [
     path('supplierAddOrUpdate', views.supplierAddOrUpdate_view, name='supplierAddOrUpdate'),
     # Get supplier information; comes after supplierAddOrUpdate
     path('supplierAfterAddOrUpdate', views.supplierAfterAddOrUpdate_view, name='supplierAfterAddOrUpdate'),
+    # Add a new project 
+    path('projectAdd', views.projectadd_view, name ='project_add'),
     # Get project name and status
     path('projectBaseInfo', views.projectBaseInfo_view, name='projectBaseInfo'),
     # Get project budget and expenditures
@@ -66,4 +68,12 @@ urlpatterns = [
     path('supplierContactUpdate', views.supplierContactUpdate_view , name=' supplierContactUpdate' ),
     # Gets updated supplier Contact; comes after supplierContactUpdate
     path('supplierContactAfterUpdate', views.supplierContactAfterUpdate_view, name='supplierContactAfterUpdate' ),
+    # Gets the Supplier that needs to be deleted
+    # path('supplierCompanyDelete', views.supplierCompanyDelete_view , name = ' supplierCompanyDelete' ),
+    # Gets the Supplier that needs to be deleted; comes after supplierConactDelete
+    # path('supplierCompanyAfterDelete', views.supplierCompanyAfterDelete_view, name = 'supplierCompanyAfterDelete' ),
+    # Gets the information needed for the customer contact
+    path('customerContactUpdate',views.customerContactUpdate_view, name = 'customerContactUpdate'),
+    # Gets information for new customer contact and puts it into the system
+    path('customerContactAdd', views.customerContactAdd_view, name = 'customerContactAdd'),
 ]
