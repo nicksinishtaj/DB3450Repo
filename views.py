@@ -455,6 +455,23 @@ def supplierAfterAddOrUpdate_view(request):
     }
     return render(request, 'DB3450Repo/supplierAfterAddOrUpdate.html', context)
 
+def projectadd_view(request):
+    if request.GET.get('project_add_id'):
+        project_id = request.GET['project_add_id']
+        project_id_int = int(project_id)
+        project_status = request.GET['project_add_status']
+        project_name = request.GET['project_add_name']
+        project_budget = request.GET['project_add_budget']
+        project_budget_dec = float(project_budget)
+        customer_company_id = request.GET['cus_comp_add_id']
+        customer_company_id_int = int(customer_company_id)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO project VALUES(%s,%s,%s,%s,%s)", [project_id_int, project_status,project_name, project_budget_dec, customer_company_id_int])
+        connection.commit()
+        cursor.close()
+    
+    return render(request, 'DB3450Repo/projectAdd.html')
+
 def projectBaseInfo_view(request):
     query_set_append = []
     if request.GET.get('project_id'):
@@ -598,3 +615,44 @@ def supplierContactAfterUpdate_view(request):
         'object_instance': query_set,
     }
     return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
+
+def customerContactAdd_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        cus_con_add_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        cus_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO customer_contact VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", [cus_con_add_id_int, cus_id_int,customer_contact_fname,customer_contact_lname,customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_current])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactAdd.html')
+
+def customerContactUpdate_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET('customer_contact_add_id')
+        customer_contact_id_int = int(customer_contact_id)
+        customer_id = request.GET('customer_add_id')
+        customer_id_int = int(customer_id)
+        customer_contact_fname = request.GET('customer_contact_add_fname')
+        customer_contact_lname = request.GET('customer_contact_add_lname')
+        customer_contact_email = request.GET('customer_contact_add_email')
+        customer_contact_tel = request.GET('customer_contact_add_tel')
+        customer_contact_role = request.GET('customer_contact_add_role')
+        customer_contact_current = request.GET('customer_contact_add_current')
+        cursor = connection.cursor()
+        cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_email = %s,customer_contact_lname = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [customer_contact_id_int, customer_id_int,customer_contact_fname, customer_contact_lname, customer_company_email,customer_contact_tel,customer_contact_role,customer_contact_current,customer_contact_id_int, customer_id_int])
+        connection.commit()
+        cursor.close()
+
+
+    return render(request, 'DB3450Repo/customerContactUpdate.html')
+
+
