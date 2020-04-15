@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <title>Construction</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Update Logged Employee Hours</h1>
+      {% for item in messages%}
+      <p>{{item}}</p>
+      {% endfor %}
+      <form action="{% url 'employeeHoursEdit' %}">
+        <p>Enter employee ID:</p>
+        <textarea name="employee_id" cols="10" rows="1"></textarea>
+        <p>Enter project ID:</p>
+        <textarea name="project_id" cols="10" rows="1"></textarea><br />
+        <p>Enter the first day of the pay period (YYYY-MM-DD):</p>
+        <textarea name="start_date" cols="10" rows="1"></textarea><br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>
