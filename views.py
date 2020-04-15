@@ -41,12 +41,6 @@ def employeePurchaseInfo_view(request):
     return render(request, 'DB3450Repo/employeePurchaseInfo.html', {'empPurchInfo': query_set_append})
 
 
-<< << << < HEAD
-
-== == == =
->>>>>> > master
-
-
 def employeePermission_view(request):
     query_set = EmployeePermission.objects.raw(
         'SELECT * FROM employee_permission')
@@ -570,7 +564,7 @@ def projectBaseInfo_view(request):
 def projectBudget_view(request):
     project_id_int = request.session.get('project_id')
     query_set_append = []
-    query_set = Project.objects.raw('Select * FROM project')
+    query_set = Project.objects.raw('SELECT * FROM project')
     # Get budget total for project
     for object in query_set:
         if(project_id_int == object.project_id):
@@ -583,10 +577,20 @@ def projectBudget_view(request):
                       WHERE project_id = %s;
                    """, [project_id_int])
     purchaseProjectInformation = cursor.fetchall()
+
+    # Get employee hours information
+    cursor.execute("""SELECT EMPLOYEE_ID, EMPLOYEE_NAME_FIRST, EMPLOYEE_NAME_LAST, SUM(EMPLOYEE_HOURS_RATE * (EMPLOYEE_HOURS_SUN1 + EMPLOYEE_HOURS_MON1 + EMPLOYEE_HOURS_TUE1 + EMPLOYEE_HOURS_WED1 + EMPLOYEE_HOURS_THR1 + EMPLOYEE_HOURS_FRI1 + EMPLOYEE_HOURS_SAT1 + 
+                      EMPLOYEE_HOURS_SUN2 + EMPLOYEE_HOURS_MON2 + EMPLOYEE_HOURS_TUE2 + EMPLOYEE_HOURS_WED2 + EMPLOYEE_HOURS_THR2 + EMPLOYEE_HOURS_FRI2 + EMPLOYEE_HOURS_SAT2))
+                      FROM employee JOIN employee_hours USING (EMPLOYEE_ID)
+                      WHERE project_id = %s
+                      GROUP BY EMPLOYEE_ID;
+                   """, [project_id_int])
+    employeeCostInformation = cursor.fetchall()
     
     context = {
         'budgetResults': query_set_append,
-        'purchaseProjectInfo': purchaseProjectInformation
+        'purchaseProjectInfo': purchaseProjectInformation,
+        'employeeCostInfo': employeeCostInformation,
     }
 
     return render(request, 'DB3450Repo/projectBudget.html', context)
@@ -621,15 +625,8 @@ def projectInventory_view(request):
         quantity_amount_delete_int = int(quantity_amount_delete)
 
         # Match inventory name with inventory id
-        project_inv_query_set = ProjectInventory.objects.raw(
-            'SELECT * FROM project_inventory')
-        inventory_match = Inventory.objects.get(
-            inventory_name=inventory_name_delete)
-
-        project_inv_query_set = ProjectInventory.objects.raw(
-            'SELECT * FROM project_inventory')
-        inventory_match = Inventory.objects.get(
-            inventory_name=inventory_name_delete)
+        project_inv_query_set = ProjectInventory.objects.raw('SELECT * FROM project_inventory')
+        inventory_match = Inventory.objects.get(inventory_name=inventory_name_delete)
 
         for inventoryItem in project_inv_query_set:
             # Get match for inventory name to inventory id and item in correct project

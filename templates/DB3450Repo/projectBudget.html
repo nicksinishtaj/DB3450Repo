@@ -31,6 +31,12 @@
 
         <div>
             <h2>Project Employee Costs</h2>
+            {% for emp in employeeCostInfo %}
+                <ul>
+                    <li> Employee Name: {{emp.2}} {{emp.1}}</li>
+                    <li> Employee Salary: ${{emp.3}}</li>
+                </ul>
+            {% endfor %}
         </div>
 
         <div>
