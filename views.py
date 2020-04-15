@@ -477,12 +477,22 @@ def projectBudget_view(request):
     project_id_int = request.session.get('project_id')
     query_set_append = []
     query_set = Project.objects.raw('Select * FROM project')
+    # Get budget total for project
     for object in query_set:
         if(project_id_int == object.project_id):
             query_set_append.append(object)
+
+    # Get purchase information for the project
+    cursor = connection.cursor()
+    cursor.execute("""SELECT INVENTORY_NAME, PURCHASE_TOTAL, PURCHASE_QUANTITY, PURCHASE_DATE
+                      FROM purchase JOIN inventory using (INVENTORY_ID)
+                      WHERE project_id = %s;
+                   """, [project_id_int])
+    purchaseProjectInformation = cursor.fetchall()
     
     context = {
-        'budgetResults': query_set_append
+        'budgetResults': query_set_append,
+        'purchaseProjectInfo': purchaseProjectInformation
     }
     
     return render(request, 'DB3450Repo/projectBudget.html', context)
