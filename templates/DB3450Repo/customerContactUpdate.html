@@ -11,40 +11,41 @@
 <body> 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
         </div>
     </nav>
     <div class = "container">
         <h1>Update Customer Contact:</h1>
         <p> Add same information if information has not change</p>
-        <form action="GET">
+        <form method ="GET">
             <br/>
             <label>Customer Contact ID:</label>
-            <textarea name="customer_contact_add_id"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_id'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Company ID:</label>
-            <textarea name="customer_add_id"  cols="10" rows="1"></textarea>
+            <textarea name='customer_add_id'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact First Name:</label>
-            <textarea name="customer_contact_add_fname"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_fname'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact Last Name:</label>
-            <textarea name="customer_contact_add_lname"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_lname'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact Email:</label>
-            <textarea name="customer_contact_add_email"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_email'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact Telephone:</label>
-            <textarea name="customer_contact_add_tel"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_tel'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact Role:</label>
-            <textarea name="customer_contact_add_role"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_role'  cols="10" rows="1"></textarea>
             <br/>
             <label>Customer Contact Current:</label>
-            <textarea name="customer_contact_add_current"  cols="10" rows="1"></textarea>
+            <textarea name='customer_contact_add_current'  cols="10" rows="1"></textarea>
             <br/>
             <input type="submit" value="Submit"/>
         </form>
-
+        <a class="btn btn-primary my-md-2" href="http://localhost:8000/customerContactAdd">Customer Contact Add</a>
+        <br/>
  </body>
 </html>

@@ -296,7 +296,7 @@ class SupplierCompany(models.Model):
 
 class SupplierContact(models.Model):
     supplier_contact_id = models.IntegerField(db_column='SUPPLIER_CONTACT_ID', primary_key=True)  # Field name made lowercase.
-    supplier_id = models.IntegerField(db_column='SUPPLIER_ID')  # Field name made lowercase.
+    supplier_contact_supplier = models.ForeignKey('SupplierCompany', models.DO_NOTHING, db_column='SUPPLIER_CONTACT_SUPPLIER_ID')  # Field name made lowercase.
     supplier_contact_fname = models.CharField(db_column='SUPPLIER_CONTACT_FNAME', max_length=45)  # Field name made lowercase.
     supplier_contact_lname = models.CharField(db_column='SUPPLIER_CONTACT_LNAME', max_length=45)  # Field name made lowercase.
     supplier_contact_email = models.CharField(db_column='SUPPLIER_CONTACT_EMAIL', max_length=45)  # Field name made lowercase.

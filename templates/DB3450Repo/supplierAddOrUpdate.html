@@ -12,29 +12,36 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
         </div>
     </nav>
     <div class="container">
-        <h1>Add Permission</h1>
-        <p>Enter new inventory name and description</p>
-        <br/>
+        <h1>Add or Update Suppliers</h1>
+        <p>Enter existing inventory and supplier combination to update that record, or create a new record with existing inventory items and supplier companies (leave ID blank to add new)
 
         <form action="{% url 'supplierAfterAddOrUpdate' %}">
+            <label>ID</label>
             <textarea name=supplier_company_id cols="10" rows="1"></textarea>
             <br/>
+            <label>Name</label>
             <textarea name=supplier_company_name cols="10" rows="1"></textarea>
             <br/>
+            <label>Street 1</label>
             <textarea name=supplier_company_streetOne cols="10" rows="1"></textarea>
             <br/>
+            <label>Street 2</label>
             <textarea name=supplier_company_streetTwo cols="10" rows="1"></textarea>
             <br/>
+            <label>City</label>
             <textarea name=supplier_company_city cols="10" rows="1"></textarea>
             <br/>
+            <label>State</label>
             <textarea name=supplier_company_state cols="10" rows="1"></textarea>
             <br/>
+            <label>Zip</label>
             <textarea name=supplier_company_zip cols="10" rows="1"></textarea>
             <br/>
+            <label>Notes</label>
             <textarea name="supplier_company_notes" cols="10" rows="1"></textarea>
             <input type="submit" value="Submit" />
         </form>

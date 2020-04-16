@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V6</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <title>Construction</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
+        </div>
+    </nav>
+    <h1>Update Customer Company Information</h1>
+    <p>Enter in updated information, enter same information if not changed</p>
+    <form method = "GET">
+        <label>Customer Company ID:</label>
+        <textarea name='customer_company_add_id'  cols="10" rows="1"></textarea>  
+        <br/>
+        <label>Customer Company Name:</label>
+        <textarea name='customer_company_add_name'  cols="10" rows="1"></textarea>        
+        <br/>
+        <label>Customer company street:</label>
+        <textarea name='customer_company_add_street1'  cols="10" rows="1"></textarea>
+        <br/>
+        <label>Customer Company Street Alternative:</label>
+        <textarea name='customer_company_add_street2'  cols="10" rows="1"></textarea>
+        <br/>
+        <label>Customer Company City:</label>
+        <textarea name='customer_company_add_city'  cols="15" rows="1"></textarea>
+        <br/>
+        <label>Customer Company State:</label>
+        <textarea name='customer_company_add_state'  cols="10" rows="1"></textarea>
+        <br/>
+        <label>Customer Company Zip:</label>
+        <textarea name='customer_company_add_zip'  cols="10" rows="1"></textarea>
+        <br/>
+        <label>Employee ID:</label>
+        <textarea name='employee_add_ID'  cols="5" rows="1"></textarea>
+        <br/>
+        <input type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <a class="btn btn-primary my-md-2" href="http://localhost:8000/customerCompanyAdd">Customer Company Add</a>
+ </body>

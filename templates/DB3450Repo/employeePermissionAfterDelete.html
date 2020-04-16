@@ -10,21 +10,27 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
         </div>
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col">
                 <h1>Employees</h1>
                 {% for item in employee_object_instance %}
                     <p>{{item.employee_name_first}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-8">
+            <div class="col">
                 <h1>   Permissions</h1>
                 {% for item in permission_object_instance %}
                     <p>{{item.permission_name}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>   Project</h1>
+                {% for item in project_object_instance %}
+                    <p>{{item.project_name}}</p>
                 {% endfor %}
             </div>
         </div>

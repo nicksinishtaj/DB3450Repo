@@ -8,10 +8,11 @@ urlpatterns = [
     path('', views.home, name='home'),
     # Login page
     path('login/', LoginView.as_view(template_name='DB3450Repo/userLogin.html'), name="Login"),
-
+    path('homeII', views.homeII_view, name='homeII'),
 
     #INVENTORY PATH INFORMATION
     # List the inventory
+    path('inventoryBaseInfo/', views.inventoryBaseInfo_view, name='inventoryBaseInfo'),
     path('inventory/', views.inventory_view, name='inventory'),
     # Search the inventory
     path('inventoryQuery', views.inventoryQuery_view, name='inventoryQuery'),
@@ -28,6 +29,7 @@ urlpatterns = [
     # Get inventory purchase information
     path('inventoryPurchaseInfo', views.inventoryPurchaseInfo_view, name='inventoryPurchaseInfo'),
     # Add or Update a supplier's inventory record
+    path('inventorySupplierView', views.inventorySupplierView_view, name='inventorySupplierView'),
     path('inventorySupplierAddOrUpdate', views.inventorySupplierAdd_view, name='inventorySupplierAdd'),
     # Get a supplier's inventory record; comes after inventorySupplierAddOrUpdate
     path('inventorySupplierAfterAddOrUpdate', views.inventorySupplierAfterAdd_view, name='inventorySupplierAfterAdd'),
@@ -72,6 +74,7 @@ urlpatterns = [
     # Get supplier landing page; comes after clicking on 'Supplier' button on the home page
     path('supplierLanding', views.supplierLanding_view, name='supplierLanding'),
     # Add or update supplier information
+    path('supplierView', views.supplierView_view, name='supplierView'),
     path('supplierAddOrUpdate', views.supplierAddOrUpdate_view, name='supplierAddOrUpdate'),
     # Get supplier information; comes after supplierAddOrUpdate
     path('supplierAfterAddOrUpdate', views.supplierAfterAddOrUpdate_view, name='supplierAfterAddOrUpdate'),
@@ -80,9 +83,7 @@ urlpatterns = [
     # Gets updated supplier Contact; comes after supplierContactUpdate
     path('supplierContactAfterUpdate', views.supplierContactAfterUpdate_view, name='supplierContactAfterUpdate'),
     # Gets the Supplier that needs to be deleted
-    # path('supplierCompanyDelete', views.supplierCompanyDelete_view , name = ' supplierCompanyDelete' ),
-    # Gets the Supplier that needs to be deleted; comes after supplierConactDelete
-    # path('supplierCompanyAfterDelete', views.supplierCompanyAfterDelete_view, name = 'supplierCompanyAfterDelete' ),
+    path('supplierCompanyDelete', views.supplierCompanyDelete_view , name = ' supplierCompanyDelete' ),
 
 
     # PROJECT PATH INFORMATION
@@ -98,13 +99,29 @@ urlpatterns = [
     path('projectInventory', views.projectInventory_view, name='projectInventory'),
     # Get project purchase information
     path('projectPurchases', views.projectPurchases_view, name='projectPurchases'),
+    # Add Supplier Contact
+    path('supplierContactAdd', views.supplierContactAdd_view , name=' supplierContactAdd' ),
+    # Gets added supplier Contact; comes after supplierContactAdd
+    path('supplierContactAfterAdd', views.supplierContactAfterAdd_view, name='supplierContactAfterAdd' ),
+    # Updated Supllier Contact
+    path('supplierContactUpdate', views.supplierContactUpdate_view , name=' supplierContactUpdate' ),
+    # Gets updated supplier Contact; comes after supplierContactUpdate
+    path('supplierContactAfterUpdate', views.supplierContactAfterUpdate_view, name='supplierContactAfterUpdate' ),
+    #Gets Supplier Contact ID; and sets the supplier_contact_current value to 0
+    path('supplierContactDelete', views.supplierContactDelete_views, name='supplierContactDelete' ),
     # Get project purchase information
     path('projectPurchases', views.projectPurchases_view, name='projectPurchases'),
 
 
     # CUSTOMER PATH INFORMATION
+    #Gets customer landing page; comes after clicking 'customer' on main page
+    path('customerLanding', views.customerLanding_view, name='customerLanding'),
     # Gets information for new customer contact and puts it into the system
     path('customerContactAdd', views.customerContactAdd_view, name='customerContactAdd'),
     # Gets the information needed for the customer contact
     path('customerContactUpdate', views.customerContactUpdate_view, name='customerContactUpdate'),
+    # Gets the information requried to update values in the Customer_company table
+    path('customerCompanyUpdate', views.customerCompanyUpdate_view, name='customerCompanyUpdate'),
+    # Gets the information for adding a new Customer into the system
+    path('customerCompanyAdd', views.customerCompanyAdd_view, name='customerCompanyAdd'),
 ]

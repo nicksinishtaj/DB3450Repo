@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
         </div>
     </nav>
     <div class="container">
@@ -18,13 +18,13 @@
         <p>Enter new inventory name and description</p>
         <br/>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-sm-4">
                 <h1>Name</h1>
                 {% for item in object_instance %}
                     <p>{{item.inventory_name}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-8">
+            <div class="col-sm-4">
                 <h1>   Description</h1>
                 {% for item in object_instance %}
                     <p>{{item.inventory_description}}</p>
