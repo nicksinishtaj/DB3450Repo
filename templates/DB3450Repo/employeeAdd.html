@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <title>Construction</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>View Logged Employee Hours</h1>
+      {% for item in messages%}
+      <p>{{item}}</p>
+      {% endfor %}
+      <form action="{% url 'employeeAdd' %}">
+        <p>Enter employee first name:</p>
+        <textarea name="first_name" cols="10" rows="1"></textarea>
+        <p>Enter employee middle name:</p>
+        <textarea name="middle_name" cols="10" rows="1"></textarea>
+        <p>Enter employee last name:</p>
+        <textarea name="last_name" cols="10" rows="1"></textarea>
+        <p>Enter employee job title:</p>
+        <textarea name="title" cols="10" rows="1"></textarea>
+        <p>Enter employee date of birth (YYY-MM-DD):</p>
+        <textarea name="dob" cols="10" rows="1"></textarea>
+        <p>Enter employee hire date (YYY-MM-DD):</p>
+        <textarea name="hire_date" cols="10" rows="1"></textarea>
+        <p>Enter employee work email:</p>
+        <textarea name="work_email" cols="10" rows="1"></textarea>
+        <p>Enter employee alternate email:</p>
+        <textarea name="alt_email" cols="10" rows="1"></textarea>
+        <p>Enter employee work phone number:</p>
+        <textarea name="work_phone" cols="10" rows="1"></textarea>
+        <p>Enter employee alternate phone number:</p>
+        <textarea name="alt_phone" cols="10" rows="1"></textarea>
+        <p>Enter employee manager id:</p>
+        <textarea name="manager_id" cols="10" rows="1"></textarea>
+        <p>Enter employee pay rate:</p>
+        <textarea name="pay_rate" cols="10" rows="1"></textarea>
+        <br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>

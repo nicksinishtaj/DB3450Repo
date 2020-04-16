@@ -117,6 +117,26 @@ urlpatterns = [
     #Gets customer landing page; comes after clicking 'customer' on main page
     path('customerLanding', views.customerLanding_view, name='customerLanding'),
     # Gets information for new customer contact and puts it into the system
+    path('customerContactAdd', views.customerContactAdd_view,
+         name='customerContactAdd'),
+    # Get a list of employees managed by a given employee
+    path('employeeEmployeesManaged', views.employeeEmployeesManaged_view,
+         name='employeeEmployeesManaged'),
+    # Get a list of customers managed by a given employee
+    path('employeeCustomersManaged', views.employeeCustomersManaged_view,
+         name='employeeCustomersManaged'),
+    # Add new employees
+    path('employeeAdd', views.employeeAdd_view,
+         name='employeeAdd'),
+    # Update employees
+    path('employeeUpdate', views.employeeUpdate_view,
+         name='employeeUpdate'),
+    # Remove employees
+    path('employeeDelete', views.employeeDelete_view,
+         name='employeeDelete'),
+    # Employee home
+    path('employeeHome', views.employeeHome_view,
+         name='employeeHome'),
     path('customerContactAdd', views.customerContactAdd_view, name='customerContactAdd'),
     # Gets the information needed for the customer contact
     path('customerContactUpdate', views.customerContactUpdate_view, name='customerContactUpdate'),

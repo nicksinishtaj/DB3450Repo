@@ -6,9 +6,10 @@ from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from DB3450Repo.models import (Employee, EmployeeHours, EmployeePermission,
-                               Inventory, InventorySupplier, Permission,
-                               Project, ProjectInventory, SupplierCompany,
+from DB3450Repo.models import (CustomerCompany, Employee, EmployeeHours,
+                               EmployeePermission, Inventory,
+                               InventorySupplier, Permission, Project,
+                               ProjectInventory, SupplierCompany,
                                SupplierContact)
 
 # GENERAL LINK HANDLING
@@ -588,7 +589,6 @@ def employeePermissionAfterAdd_view(request):
 
     return render(request, 'DB3450Repo/employeePermission.html', context)
 
-
 def employeePermissionQuery_view(request):
     return render(request, 'DB3450Repo/employeePermissionQuery.html')
 
@@ -1007,6 +1007,121 @@ def employeeHoursEditSelect_view(request):
     }
     return render(request, 'DB3450Repo/employeeHoursEditSelect.html', context)
 
+
+def employeeEmployeesManaged_view(request):
+    employee_id_request = request.GET.get('employee_id')
+    print(employee_id_request)
+
+    query_results = []
+    if (employee_id_request != None and employee_id_request != ""):
+        query_results = Employee.objects.raw(
+            'SELECT * FROM employee WHERE employee_manager_id=' + employee_id_request + ";")
+
+    context = {
+        'employees': query_results
+    }
+    return render(request, 'DB3450Repo/employeeEmployeesManaged.html', context)
+
+
+def employeeCustomersManaged_view(request):
+    employee_id_request = request.GET.get('employee_id')
+    print(employee_id_request)
+
+    query_results = []
+    if (employee_id_request != None and employee_id_request != ""):
+        query_results = CustomerCompany.objects.raw(
+            'SELECT * FROM customer_company WHERE employee_id=' + employee_id_request + ";")
+
+    context = {
+        'customers': query_results
+    }
+    return render(request, 'DB3450Repo/employeeCustomersManaged.html', context)
+
+
+def employeeAdd_view(request):
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
+    title = request.GET.get('title')
+    dob = request.GET.get('dob')
+    hire_date = request.GET.get('hire_date')
+    work_email = request.GET.get('work_email')
+    alt_email = request.GET.get('alt_email')
+    work_phone = request.GET.get('work_phone')
+    alt_phone = request.GET.get('alt_phone')
+    manager_id = request.GET.get('manager_id')
+    pay_rate = request.GET.get('pay_rate')
+
+    messages = []
+
+    if first_name == "" or middle_name == "" or last_name == "" or title == "" or dob == "" or hire_date == "" or work_email == "" or alt_email == "" or work_phone == "" or alt_phone == "" or manager_id == "" or pay_rate == "" or first_name == None or middle_name == None or last_name == None or title == None or dob == None or hire_date == None or work_email == None or alt_email == None or work_phone == None or alt_phone == None or manager_id == None or pay_rate == None:
+        messages.append(
+            "Enter the other necessary information to add an employee")
+    else:
+        sql = "INSERT INTO employee SET employee_name_first=\"" + first_name + "\", employee_name_middle=\"" + middle_name + "\", employee_name_last=\"" + last_name + "\", employee_title=\"" + title + "\", employee_dob=\"" + dob + \
+            ", employee_hire_date=\"" + hire_date + "\", employee_email_work=\"" + work_email + "\", employee_email_alt=\"" + alt_email + \
+            "\", employee_tel_work=" + work_phone + ", employee_tel_alt=" + \
+            alt_phone + ", employee_pay_rate=" + pay_rate
+        if (manager_id != "" and manager_id != None):
+            sql = sql + ", employee_manager_id=" + manager_id
+        sql = sql + ";"
+        print(sql)
+        django.db.connection.cursor().execute(sql)
+        messages = ["Employee Added successfully!"]
+
+    context = {
+        'messages': messages
+    }
+    return render(request, 'DB3450Repo/employeeAdd.html', context)
+
+
+def employeeUpdate_view(request):
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
+    title = request.GET.get('title')
+    dob = request.GET.get('dob')
+    hire_date = request.GET.get('hire_date')
+    work_email = request.GET.get('work_email')
+    alt_email = request.GET.get('alt_email')
+    work_phone = request.GET.get('work_phone')
+    alt_phone = request.GET.get('alt_phone')
+    manager_id = request.GET.get('manager_id')
+    pay_rate = request.GET.get('pay_rate')
+
+    messages = []
+
+    if first_name == "" or middle_name == "" or last_name == "" or title == "" or dob == "" or hire_date == "" or work_email == "" or alt_email == "" or work_phone == "" or alt_phone == "" or manager_id == "" or pay_rate == "" or first_name == None or middle_name == None or last_name == None or title == None or dob == None or hire_date == None or work_email == None or alt_email == None or work_phone == None or alt_phone == None or manager_id == None or pay_rate == None:
+        messages.append(
+            "Enter the other necessary information to add an employee")
+    else:
+        sql = "INSERT INTO employee SET employee_name_first=\"" + first_name + "\", employee_name_middle=\"" + middle_name + "\", employee_name_last=\"" + last_name + "\", employee_title=\"" + title + "\", employee_dob=\"" + dob + \
+            "\", employee_hire_date=\"" + hire_date + "\", employee_email_work=\"" + work_email + "\", employee_email_alt=\"" + alt_email + \
+            ", employee_tel_work" + work_phone + ", employee_tel_alt" + \
+            alt_phone + ", employee_pay_rate=" + pay_rate
+        if (manager_id != "" and manager_id != None):
+            sql = sql + ", employee_manager_id=" + manager_id
+        sql = sql + ";"
+        print(sql)
+        django.db.connection.cursor().execute(sql)
+        messages = ["Employee Added successfully!"]
+
+    context = {
+        'messages': messages
+    }
+    return render(request, 'DB3450Repo/employeeUpdate.html', context)
+
+
+def employeeDelete_view(request):
+    return render(request, 'DB3450Repo/employeeDelete.html')
+
+
+def employeeHome_view(request):
+    return render(request, 'DB3450Repo/employeeHome.html')
+
+
+def employeeHoursHome_view(request):
+    return render(request, 'DB3450Repo/employeeHoursHome.html')
 
 # SUPPLIER LINK HANDLING
 def supplierLanding_view(request):
@@ -1474,4 +1589,5 @@ def customerCompanyAdd_view(request):
         cursor.close()
 
     return render(request, 'DB3450Repo/customerCompanyAdd.html')
+
 
