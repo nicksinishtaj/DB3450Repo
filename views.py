@@ -87,16 +87,20 @@ def employeePermissionAdd_view(request):
     query_set = EmployeePermission.objects.raw('SELECT * FROM employee_permission')
     employee_query_set = Employee.objects.raw('SELECT * FROM employee')
     permission_query_set = Permission.objects.raw('SELECT * FROM permission')
+    project_query_set = Project.objects.raw('SELECT * FROM project')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     for employeePermission in query_set:
                 employee_query_set_append.append(employeePermission.employee)
                 permission_query_set_append.append(employeePermission.permission_level)
+                project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance' : employee_query_set_append,
-        'permission_object_instance' : permission_query_set_append
+        'permission_object_instance' : permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
@@ -119,6 +123,7 @@ def employeePermissionAfterAdd_view(request):
     project_query_set = Project.objects.raw('SELECT * FROM project')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     x = 0
     
@@ -140,10 +145,12 @@ def employeePermissionAfterAdd_view(request):
     for employeePermission in new_query_set:
                 employee_query_set_append.append(employeePermission.employee)
                 permission_query_set_append.append(employeePermission.permission_level)
+                project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance' : employee_query_set_append,
-        'permission_object_instance' : permission_query_set_append
+        'permission_object_instance' : permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermission.html', context)
@@ -155,14 +162,17 @@ def employeePermissionDelete_view(request):
     permission_query_set = Permission.objects.raw('SELECT * FROM permission')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     for employeePermission in query_set:
                 employee_query_set_append.append(employeePermission.employee)
                 permission_query_set_append.append(employeePermission.permission_level)
+                project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance' : employee_query_set_append,
-        'permission_object_instance' : permission_query_set_append
+        'permission_object_instance' : permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
@@ -188,14 +198,17 @@ def employeePermissionAfterDelete_view(request):
     permission_query_set_final = Permission.objects.raw('SELECT * FROM permission')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
-    for employeePermission in new_query_set:
+    for employeePermission in query_set:
                 employee_query_set_append.append(employeePermission.employee)
                 permission_query_set_append.append(employeePermission.permission_level)
+                project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance' : employee_query_set_append,
-        'permission_object_instance' : permission_query_set_append
+        'permission_object_instance' : permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
     return render(request, 'DB3450Repo/employeePermissionAfterDelete.html', context)
   
@@ -328,10 +341,11 @@ def inventorySupplierAfterAdd_view(request):
     inventory_query_set = Inventory.objects.raw('SELECT * FROM inventory')
     supplier_query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
 
+
     newInventory = Inventory.objects.get(inventory_name = inventory_name_request)
     newSupplier = SupplierCompany.objects.get(supplier_company_name = supplier_company_request)
 
-    validateInventory = InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier)
+    validateInventory = InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier) if InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier) is not None else None
 
     if(validateInventory is not None):
         cursor = connection.cursor()
@@ -566,3 +580,62 @@ def supplierContactAfterUpdate_view(request):
         'object_instance': query_set,
     }
     return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
+
+def supplierContactAdd_view(request):
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    supplier_query_set_append = []
+
+    for obj in query_set:
+        supplier_query_set_append.append(obj.supplier_contact_supplier)
+
+    context = {
+        'object_instance': query_set,
+        'supplier_object_instance': supplier_query_set_append
+    }
+    return render(request, 'DB3450Repo/supplierContactAdd.html', context)
+
+def supplierContactAfterAdd_view(request):
+    supplier_name_req = request.GET['supplier_name']
+    fname_req = request.GET['supplier_contact_fname']
+    lname_req = request.GET['supplier_contact_lname']
+    email_req = request.GET['supplier_contact_email']
+    tel_req = request.GET['supplier_contact_tel']
+    role_req = request.GET['supplier_contact_role']
+    current_req = request.GET['supplier_contact_current']
+    id_req_int = 0
+
+    current_req_int = int(current_req)
+
+    supplier_query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
+
+    newSupplier = SupplierCompany.objects.get(supplier_company_name = supplier_name_req)
+
+    # newValidSupplier = SupplierContact(
+    #     supplier_contact_supplier = newSupplier,
+    #     supplier_contact_fname = fname_req,
+    #     supplier_contact_lname = lname_req,
+    #     supplier_contact_email = email_req,
+    #     supplier_contact_tel = tel_req,
+    #     supplier_contact_role = role_req,
+    #     supplier_contact_current = current_req_int 
+    #     )
+
+    # newValidSupplier.save()
+
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO supplier_contact (supplier_contact_supplier_id, supplier_contact_fname, supplier_contact_lname, supplier_contact_email, supplier_contact_tel, supplier_contact_role, supplier_contact_current) VALUES (%s,%s,%s,%s,%s,%s,%s)', [newSupplier.supplier_company_id, fname_req, lname_req, email_req, tel_req, role_req, current_req_int])
+    connection.commit()
+
+    query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    supplier_query_set_append = []
+
+    for obj in query_set:
+        supplier_query_set_append.append(obj.supplier_contact_supplier)
+
+    context = {
+        'object_instance': query_set,
+        'supplier_object_instance': supplier_query_set_append
+    }
+
+    return render(request, 'DB3450Repo/supplierContactAfterAdd.html', context)
+

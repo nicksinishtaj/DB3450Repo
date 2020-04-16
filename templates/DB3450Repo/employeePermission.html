@@ -23,16 +23,22 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col">
                     <h1>Employees</h1>
                     {% for item in employee_object_instance %}
                         <p>{{item.employee_name_first}}</p>
                     {% endfor %}
                 </div>
-                <div class="col-md-8">
+                <div class="col">
                     <h1>   Permissions</h1>
                     {% for item in permission_object_instance %}
                         <p>{{item.permission_name}}</p>
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    <h1>   Project</h1>
+                    {% for item in project_object_instance %}
+                        <p>{{item.project_name}}</p>
                     {% endfor %}
                 </div>
             </div>
