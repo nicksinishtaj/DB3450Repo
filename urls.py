@@ -125,4 +125,16 @@ urlpatterns = [
     # Get a list of customers managed by a given employee
     path('employeeCustomersManaged', views.employeeCustomersManaged_view,
          name='employeeCustomersManaged'),
+    # Add new employees
+    path('employeeAdd', views.employeeAdd_view,
+         name='employeeAdd'),
+    # Update employees
+    path('employeeUpdate', views.employeeUpdate_view,
+         name='employeeUpdate'),
+    # Remove employees
+    path('employeeDelete', views.employeeDelete_view,
+         name='employeeDelete'),
+    # Employee home
+    path('employeeHome', views.employeeHome_view,
+         name='employeeHome'),
 ]
