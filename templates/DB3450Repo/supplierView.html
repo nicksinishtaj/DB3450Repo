@@ -16,53 +16,55 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Delete Inventory Supplier</h1>
-        <p>Delete Record by inputting Inventory and Supplier</p>
+        <h1>Suppliers</h1>
         <br/>
-
-        <form action="{% url 'inventorySupplierAfterDelete' %}">
-            <label>Inventory:</label>
-            <textarea name=inventory_name cols="10" rows="1"></textarea>
-            <br/>
-            <label>Supplier:</label>
-            <textarea name=supplier_company cols="10" rows="1"></textarea>
-            <input type="submit" value="Submit" />
-        </form>
         <div class="row">
             <div class="col">
-                <h1>Inventory</h1>
-                {% for item in inventory_object_instance %}
-                    <p>{{item.inventory_name}}</p>
+                <h1>ID</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_id}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Supplier</h1>
-                {% for item in supplier_object_instance %}
+                <h1>Name</h1>
+                {% for item in object_instance %}
                     <p>{{item.supplier_company_name}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Cost</h1>
+                <h1>Street1</h1>
                 {% for item in object_instance %}
-                    <p>{{item.inventory_supplier_cost}}</p>
+                    <p>{{item.supplier_company_street1}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Amount</h1>
+                <h1>Street2</h1>
                 {% for item in object_instance %}
-                    <p>{{item.inventory_supplier_amount}}</p>
+                    <p>{{item.supplier_company_street2}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>City</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_city}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>State</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_state}}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <h1>Zip</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_company_zip}}</p>
                 {% endfor %}
             </div>
             <div class="col">
                 <h1>Notes</h1>
                 {% for item in object_instance %}
-                    <p>{{item.inventory_supplier_notes}}</p>
-                {% endfor %}
-            </div>
-            <div class="col">
-                <h1>Preferred</h1>
-                {% for item in object_instance %}
-                    <p>{{item.inventory_supplier_preferred}}</p>
+                    <p>{{item.supplier_company_notes}}</p>
                 {% endfor %}
             </div>
         </div>

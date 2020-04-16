@@ -14,13 +14,15 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Add Permission</h1>
+        <h1>Add Inventory</h1>
         <p>Enter new inventory name and description</p>
         <br/>
 
         <form action="{% url 'inventoryAfterAdd' %}">
+            <label>Inventory Name      :</label>
             <textarea name=inventory_name cols="10" rows="1"></textarea>
             <br/>
+            <label>Inventory Description:</label>
             <textarea name="inventory_description" cols="10" rows="1"></textarea>
             <input type="submit" value="Submit" />
         </form>

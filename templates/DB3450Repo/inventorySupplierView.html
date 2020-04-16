@@ -16,33 +16,8 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Add or Update Inventory Suppliers</h1>
-        <p>Enter existing inventory and supplier combination to update that record, or create a new record with existing inventory items and supplier companies
-            <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventory">View current inventory</a>
-            <a class="btn btn-primary my-md-2" href="http://localhost:8000/supplierView">View current suppliers</a>
-        </p>
+        <h1>Current Inventory Suppliers</h1>
         <br/>
-
-        <form action="{% url 'inventorySupplierAfterAdd' %}">
-            <label>Inventory Name:</label>
-            <textarea name=inventory_name cols="10" rows="1"></textarea>
-            <br/>
-            <label>Supplier Name: </label>
-            <textarea name=supplier_company cols="10" rows="1"></textarea>
-            <br/>
-            <label>Cost:</label>
-            <textarea name=inventory_supplier_cost cols="10" rows="1"></textarea>
-            <br/>
-            <label>Amount:</label>
-            <textarea name=inventory_supplier_amount cols="10" rows="1"></textarea>
-            <br/>
-            <label>Notes:</label>
-            <textarea name=inventory_supplier_notes cols="10" rows="1"></textarea>
-            <br/>
-            <label>Preferred:</label>
-            <textarea name="inventory_supplier_preferred" cols="10" rows="1"></textarea>
-            <input type="submit" value="Submit" />
-        </form>
         <div class="row">
             <div class="col">
                 <h1>Inventory</h1>

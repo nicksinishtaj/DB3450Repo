@@ -260,7 +260,19 @@ def inventoryAfterUpdate_view(request):
     inventory_description_request = request.GET['inventory_description']
     # newInventory = Inventory(inventory_name = inventory_name_request, inventory_description = inventory_description_request)
 
-    # query_set_append = []
+    inventory_id_request_int = int(inventory_id_request)
+
+    if(inventory_name_request == ''):
+        inventory_name_request = 'none'
+    if(inventory_description_request == ''):
+        inventory_description_request = 'none'
+
+    # query_set_append = []su
+
+        # cursor = connection.cursor()
+        #  cursor.execute('UPDATE inventory_supplier SET inventory_name = %s, inventory_description = %s WHERE INVENTORY_ID = %s;', [                          
+        #             inventory_id_request_int, inventory_name_request, inventory_description_request])
+        # cursor.close()
 
     newInventory = Inventory.objects.get(inventory_id=inventory_id_request)
     newInventory.inventory_name = inventory_name_request
@@ -293,6 +305,28 @@ def inventoryPurchaseInfo_view(request):
         'invPurchInfo': query_set_append
     }
     return render(request, 'DB3450Repo/inventoryPurchaseInfo.html', context)
+
+def inventorySupplierView_view(request):
+    query_set = InventorySupplier.objects.raw(
+        'SELECT * FROM inventory_supplier')
+    inventory_query_set = Inventory.objects.raw('SELECT * FROM inventory')
+    supplier_query_set = SupplierCompany.objects.raw(
+        'SELECT * FROM supplier_company')
+    inventory_query_set_append = []
+    supplier_query_set_append = []
+
+    for inventorySupplier in query_set:
+        inventory_query_set_append.append(
+            inventorySupplier.inventory_supplier_inventory)
+        supplier_query_set_append.append(inventorySupplier.supplier)
+
+    context = {
+        'object_instance': query_set,
+        'inventory_object_instance': inventory_query_set_append,
+        'supplier_object_instance': supplier_query_set_append
+    }
+    return render(request, 'DB3450Repo/inventorySupplierView.html', context)
+
 
 
 def inventorySupplierAdd_view(request):
@@ -971,6 +1005,15 @@ def supplierAddOrUpdate_view(request):
     }
     return render(request, 'DB3450Repo/supplierAddOrUpdate.html', context)
 
+def supplierView_view(request):
+    query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
+
+    context = {
+        'object_instance': query_set,
+    }
+    return render(request, 'DB3450Repo/supplierView.html', context)
+
+
 
 def supplierAfterAddOrUpdate_view(request):
     id_req = request.GET['supplier_company_id']
@@ -1072,6 +1115,9 @@ def projectBaseInfo_view(request):
     }
 
     return render(request, 'DB3450Repo/projectBaseInfo.html', context)
+
+def inventoryBaseInfo_view(request):
+    return render(request, 'DB3450Repo/inventoryBaseInfo.html')
 
 # Add a new project 
 def projectadd_view(request):

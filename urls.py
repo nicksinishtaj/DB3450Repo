@@ -12,6 +12,7 @@ urlpatterns = [
 
     #INVENTORY PATH INFORMATION
     # List the inventory
+    path('inventoryBaseInfo/', views.inventoryBaseInfo_view, name='inventoryBaseInfo'),
     path('inventory/', views.inventory_view, name='inventory'),
     # Search the inventory
     path('inventoryQuery', views.inventoryQuery_view, name='inventoryQuery'),
@@ -28,6 +29,7 @@ urlpatterns = [
     # Get inventory purchase information
     path('inventoryPurchaseInfo', views.inventoryPurchaseInfo_view, name='inventoryPurchaseInfo'),
     # Add or Update a supplier's inventory record
+    path('inventorySupplierView', views.inventorySupplierView_view, name='inventorySupplierView'),
     path('inventorySupplierAddOrUpdate', views.inventorySupplierAdd_view, name='inventorySupplierAdd'),
     # Get a supplier's inventory record; comes after inventorySupplierAddOrUpdate
     path('inventorySupplierAfterAddOrUpdate', views.inventorySupplierAfterAdd_view, name='inventorySupplierAfterAdd'),
@@ -72,6 +74,7 @@ urlpatterns = [
     # Get supplier landing page; comes after clicking on 'Supplier' button on the home page
     path('supplierLanding', views.supplierLanding_view, name='supplierLanding'),
     # Add or update supplier information
+    path('supplierView', views.supplierView_view, name='supplierView'),
     path('supplierAddOrUpdate', views.supplierAddOrUpdate_view, name='supplierAddOrUpdate'),
     # Get supplier information; comes after supplierAddOrUpdate
     path('supplierAfterAddOrUpdate', views.supplierAfterAddOrUpdate_view, name='supplierAfterAddOrUpdate'),
