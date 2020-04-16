@@ -9,22 +9,30 @@
     <title>Construction</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000/homeII?">Home</a>
+        </div>
+    </nav>
     <div class="container">
-        <h1>Add Permission</h1>
+        <h1>Update Inventory</h1>
         <p>Enter new inventory name and description</p>
         <br/>
 
         <form action="{% url 'inventoryAfterUpdate' %}">
+            <label>ID: </label>
             <textarea name=inventory_id cols="10" rows="1"></textarea>
             <br/>
+            <label>New Name</label>
             <textarea name=inventory_name cols="10" rows="1"></textarea>
             <br/>
+            <label>New Description: </label>
             <textarea name="inventory_description" cols="10" rows="1"></textarea>
             <input type="submit" value="Submit" />
         </form>
         <div class="row">
             <div class="col-sm-4">
-                <h1>Name</h1>
+                <h1>ID</h1>
                 {% for item in object_instance %}
                     <p>{{item.inventory_id}}</p>
                 {% endfor %}

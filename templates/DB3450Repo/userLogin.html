@@ -9,23 +9,23 @@
     <title>Construction</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
     <div class="container">
-        <h1>Example Login Page</h1>
-        <p>Here it is</p>
+        <h1>Login Page</h1>
+        <p>Please log in with employee or customer credentials</p>
         <br/>
 
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <button type="submit" name="button">Login</button>
+        <form action="{% url 'homeII' %}">
+            <label>Username: </label> <input type="username">
+            <br/>
+            <label>Password: </label> <input type="password">
+            <br/>
+            <input type="submit" value="Submit" />
         </form>
-
-
-
-
     </div>
-
-
 </body>
 </html>

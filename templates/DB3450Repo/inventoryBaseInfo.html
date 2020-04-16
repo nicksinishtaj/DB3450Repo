@@ -14,8 +14,8 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Project Information</h1>
-        <p>Search for your project information here</p>
+        <h1>Inventory Information</h1>
+        <!-- <p>Search for your project information here</p>
         
         <br/>
 
@@ -23,25 +23,17 @@
             <textarea name='project_id' cols="10" rows="1"></textarea>
             <br/>
             <input type="submit" value="Submit"/>
-        </form>
+        </form> -->
         
-        <br/>
-        {% for item in project_details %}
-            <p>
-                <label>Project Name: </label>{{item.project_name}}
-            <br/> 
-                <labe>Project Status: </labe>{{item.project_status}}
-            <br/>
-                <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectBudget">Project Budget</a>
-            <br/>
-                <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectInventory">Project Inventory</a>
-            <br/>
-                <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectEmployees">Project Employees</a>
-            </p>
-        {% endfor %}
 
-        <h2>Create New Project</h2>
-        <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectAdd">Add New Project</a>
+                <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventory">View Inventory</a>
+                <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventoryAdd">Add Inventory</a>
+                <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventoryUpdate">Update Inventory</a>
+
+        <h2>Inventory Suppliers</h2>
+        <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventorySupplierView">View Current Inventory Suppliers</a>
+        <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventorySupplierAddOrUpdate">Add or Update Inventory Suppliers</a>
+        <a class="btn btn-primary my-md-2" href="http://localhost:8000/inventorySupplierDelete">Delete Inventory Suppliers</a>
 
     </div>
 </body>
