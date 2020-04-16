@@ -1153,6 +1153,7 @@ def projectBaseInfo_view(request):
 def inventoryBaseInfo_view(request):
     return render(request, 'DB3450Repo/inventoryBaseInfo.html')
 
+
 # Add a new project 
 def projectadd_view(request):
     if request.GET.get('project_add_id'):

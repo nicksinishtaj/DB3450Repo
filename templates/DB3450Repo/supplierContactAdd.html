@@ -17,18 +17,25 @@
         <br/>
         <div class="col">
             <form action="{% url 'supplierContactAfterAdd' %}">
+                <label>Supplier</label>
                 <textarea name=supplier_name cols="10" rows="1"></textarea>
                 <br/>
+                <label>First name</label>
                 <textarea name=supplier_contact_fname cols="10" rows="1"></textarea>
                 <br/>
+                <label>Last name</label>
                 <textarea name=supplier_contact_lname cols="10" rows="1"></textarea>
                 <br/>
+                <label>E-mail</label>
                 <textarea name=supplier_contact_email cols="10" rows="1"></textarea>
                 <br/>
+                <label>Phone</label>
                 <textarea name=supplier_contact_tel cols="10" rows="1"></textarea>
                 <br/>
+                <label>Role</label>
                 <textarea name=supplier_contact_role cols="10" rows="1"></textarea>
                 <br/>
+                <label>Current</label>
                 <textarea name="supplier_contact_current" cols="10" rows="1"></textarea>
                 <input type="submit" value="Submit" />
             </form>
