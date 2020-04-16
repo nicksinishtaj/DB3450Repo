@@ -1352,3 +1352,89 @@ def supplierContactAfterAdd_view(request):
 
     return render(request, 'DB3450Repo/supplierContactAfterAdd.html', context)
 
+# CUSTOMER LINK HANDLING ----------------------------------------------------------------------------------------------
+
+def customerLanding_view(request):
+    return render(request, 'DB3450Repo/customerLanding.html')
+
+def customerContactAdd_view(request):
+    if request.GET.get('Customer_add_id'):
+        customer_id = request.GET['Customer_add_id']
+        cus_id_int = int(customer_id)
+        customer_contact_fname = request.GET['Customer_contact_add_fname']
+        customer_contact_lname = request.GET['Customer_contact_add_lname']
+        customer_contact_email = request.GET['Customer_contact_add_email']
+        customer_contact_tel = request.GET['Customer_contact_add_tel']
+        customer_contact_role = request.GET['Customer_contact_add_role']
+        customer_contact_current = request.GET['Customer_contact_add_current']
+        customer_contact_cur_int = int(customer_contact_current)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO customer_contact(CUSTOMER_ID, CUSTOMER_CONTACT_FNAME, CUSTOMER_CONTACT_LNAME, CUSTOMER_CONTACT_EMAIL, CUSTOMER_CONTACT_TEL, CUSTOMER_CONTACT_ROLE, CUSTOMER_CONTACT_CURRENT) VALUES(%s,%s,%s,%s,%s,%s,%s)", [
+                        cus_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, customer_contact_cur_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactAdd.html')
+
+def customerContactUpdate_view(request):
+    if request.GET.get('customer_contact_add_id'):
+        customer_contact_id = request.GET['customer_contact_add_id']
+        customer_contact_id_int = int(customer_contact_id)
+        customer_id = request.GET['customer_add_id']
+        customer_id_int = int(customer_id)
+        customer_contact_fname = request.GET['customer_contact_add_fname']
+        customer_contact_lname = request.GET['customer_contact_add_lname']
+        customer_contact_email = request.GET['customer_contact_add_email']
+        customer_contact_tel = request.GET['customer_contact_add_tel']
+        customer_contact_role = request.GET['customer_contact_add_role']
+        customer_contact_current = request.GET['customer_contact_add_current']
+        cus_con_cur_int = int(customer_contact_current)
+        cursor = connection.cursor()
+        cursor.execute("UPDATE customer_contact SET customer_contact_id = %s,customer_id = %s, customer_contact_fname = %s, customer_contact_lname = %s,customer_contact_email = %s,customer_contact_tel = %s, customer_contact_role = %s, customer_contact_current = %s WHERE customer_contact_id = %s AND customer_id = %s ", [
+                       customer_contact_id_int, customer_id_int, customer_contact_fname, customer_contact_lname, customer_contact_email, customer_contact_tel, customer_contact_role, cus_con_cur_int, customer_contact_id_int, customer_id_int])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerContactUpdate.html')
+
+def customerCompanyUpdate_view(request):
+    if request.GET.get('customer_company_add_id'):
+        customer_company_id_request = request.GET['customer_company_add_id']
+        customer_company_id_int_request = int(customer_company_id_request)
+        customer_company_name_request = request.GET['customer_company_add_name']
+        customer_company_street1_request = request.GET['customer_company_add_street1']
+        customer_company_street2_request = request.GET['customer_company_add_street2']
+        customer_company_city_request = request.GET['customer_company_add_city']
+        customer_company_state_request = request.GET['customer_company_add_state']
+        customer_company_zip_request = request.GET['customer_company_zip']
+        employee_id_r = request.GET['employee_add_id']
+        employee_id_int_request = int(employee_id_r)
+        cursor = connection.cursor()
+        cursor = connection.cursor("UPDATE customer_company SET customer_company_id = %s, customer_company_name = %s, customer_company_street1 = %s, customer_company_street2 = %s, customer_company_city = %s, customer_company_state = %s, customer_company_zip = %s, employee_id = %s ", [
+                                    customer_company_id_int_request, customer_company_name_request, customer_company_street1_request, customer_company_street2_request, customer_company_city_request, customer_company_state_request, customer_company_zip_request, employee_id_int_request])
+        cursor.execute()
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerCompanyUpdate.html')
+
+
+def customerCompanyAdd_view(request):
+    if request.GET.get('customer_company_add_name'):
+        customer_company_name_request = request.GET['customer_company_add_name']
+        customer_company_street1_request = request.GET['customer_company_add_street1']
+        customer_company_street2_request = request.GET['customer_company_add_street2']
+        customer_company_city_request = request.GET['customer_company_add_city']
+        customer_company_state_request = request.GET['customer_company_add_state']
+        customer_company_zip_request = request.GET['customer_company_add_zip']
+        customer_company_zip_int = int(customer_company_zip_request)
+        employee_id_r = request.GET['employee_add_id']
+        employee_id_int_request = int(employee_id_r)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO customer_company(CUSTOMER_COMPANY_NAME, CUSTOMER_COMPANY_STREET1, CUSTOMER_COMPANY_STREET2, CUSTOMER_COMPANY_CITY, CUSTOMER_COMPANY_STATE, CUSTOMER_COMPANY_ZIP, EMPLOYEE_ID) VALUES(%s,%s,%s,%s,%s,%s,%s)", [
+                        customer_company_name_request, customer_company_street1_request, customer_company_street2_request, customer_company_city_request, customer_company_state_request, customer_company_zip_int, employee_id_int_request])
+        connection.commit()
+        cursor.close()
+
+    return render(request, 'DB3450Repo/customerCompanyAdd.html')
+

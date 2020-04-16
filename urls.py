@@ -114,8 +114,14 @@ urlpatterns = [
 
 
     # CUSTOMER PATH INFORMATION
+    #Gets customer landing page; comes after clicking 'customer' on main page
+    path('customerLanding', views.customerLanding_view, name='customerLanding'),
     # Gets information for new customer contact and puts it into the system
     path('customerContactAdd', views.customerContactAdd_view, name='customerContactAdd'),
     # Gets the information needed for the customer contact
     path('customerContactUpdate', views.customerContactUpdate_view, name='customerContactUpdate'),
+    # Gets the information requried to update values in the Customer_company table
+    path('customerCompanyUpdate', views.customerCompanyUpdate_view, name='customerCompanyUpdate'),
+    # Gets the information for adding a new Customer into the system
+    path('customerCompanyAdd', views.customerCompanyAdd_view, name='customerCompanyAdd'),
 ]
