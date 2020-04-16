@@ -83,9 +83,7 @@ urlpatterns = [
     # Gets updated supplier Contact; comes after supplierContactUpdate
     path('supplierContactAfterUpdate', views.supplierContactAfterUpdate_view, name='supplierContactAfterUpdate'),
     # Gets the Supplier that needs to be deleted
-    # path('supplierCompanyDelete', views.supplierCompanyDelete_view , name = ' supplierCompanyDelete' ),
-    # Gets the Supplier that needs to be deleted; comes after supplierConactDelete
-    # path('supplierCompanyAfterDelete', views.supplierCompanyAfterDelete_view, name = 'supplierCompanyAfterDelete' ),
+    path('supplierCompanyDelete', views.supplierCompanyDelete_view , name = ' supplierCompanyDelete' ),
 
 
     # PROJECT PATH INFORMATION
@@ -109,6 +107,8 @@ urlpatterns = [
     path('supplierContactUpdate', views.supplierContactUpdate_view , name=' supplierContactUpdate' ),
     # Gets updated supplier Contact; comes after supplierContactUpdate
     path('supplierContactAfterUpdate', views.supplierContactAfterUpdate_view, name='supplierContactAfterUpdate' ),
+    #Gets Supplier Contact ID; and sets the supplier_contact_current value to 0
+    path('supplierContactDelete', views.supplierContactDelete_views, name='supplierContactDelete' ),
     # Get project purchase information
     path('projectPurchases', views.projectPurchases_view, name='projectPurchases'),
 

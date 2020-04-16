@@ -1096,6 +1096,26 @@ def supplierContactAfterUpdate_view(request):
     }
     return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
 
+def supplierCompanyDelete_view(request):
+    if request.GET.get('supplier_com_del_id'):
+        supplier_company_id_req = request.GET['supplier_com_del_id']
+        supplier_int = int(supplier_company_id_req)
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM supplier_company WHERE SUPPLIER_COMPANY_ID = %s ", [supplier_int])
+        connection.commit()
+
+    return render(request, 'DB3450Repo/supplierCompanyDelete.html')
+
+def supplierContactDelete_views(request):
+    if request.GET.get('supplier_con_del_id'):
+        supplier_contact_id_req = request.GET['supplier_con_del_id']
+        supplier_int = int(supplier_contact_id_req)
+        cursor = connection.cursor()
+        cursor.execute("UPDATE supplier_contact SET SUPPLIER_CONTACT_CURRENT = %s WHERE SUPPLIER_CONTACT_ID = %s ", [1, supplier_int])
+        connection.commit()
+
+    return render(request, 'DB3450Repo/supplierContactDelete.html')
+
 # PROJECT LINK HANDLING
 # Retrieve the project name and status
 def projectBaseInfo_view(request):
