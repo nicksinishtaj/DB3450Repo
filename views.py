@@ -15,6 +15,8 @@ from DB3450Repo.models import (Employee, EmployeeHours, EmployeePermission,
 def home(request):
     return render(request, 'DB3450Repo/home.html')
 
+def homeII_view(request):
+    return render(request, 'DB3450Repo/homeII.html')
 
 # INVENTORY LINK HANDLING
 

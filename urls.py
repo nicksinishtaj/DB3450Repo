@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     # Login page
     path('login/', LoginView.as_view(template_name='DB3450Repo/userLogin.html'), name="Login"),
-
+    path('homeII', views.homeII_view, name='homeII'),
 
     #INVENTORY PATH INFORMATION
     # List the inventory
