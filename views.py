@@ -495,14 +495,17 @@ def employeePermission_view(request):
     permission_query_set = Permission.objects.raw('SELECT * FROM permission')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     for employeePermission in query_set:
         employee_query_set_append.append(employeePermission.employee)
         permission_query_set_append.append(employeePermission.permission_level)
+        project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
+        'permission_object_instance': permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
     return render(request, 'DB3450Repo/employeePermission.html', context)
 
@@ -513,14 +516,17 @@ def employeePermissionAdd_view(request):
     permission_query_set = Permission.objects.raw('SELECT * FROM permission')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     for employeePermission in query_set:
         employee_query_set_append.append(employeePermission.employee)
         permission_query_set_append.append(employeePermission.permission_level)
+        project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
+        'permission_object_instance': permission_query_set_append,
+        'project_object_instance' : project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermissionAdd.html', context)
@@ -545,6 +551,7 @@ def employeePermissionAfterAdd_view(request):
     project_query_set = Project.objects.raw('SELECT * FROM project')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     x = 0
 
@@ -569,10 +576,12 @@ def employeePermissionAfterAdd_view(request):
     for employeePermission in new_query_set:
         employee_query_set_append.append(employeePermission.employee)
         permission_query_set_append.append(employeePermission.permission_level)
+        project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
+        'permission_object_instance': permission_query_set_append,
+        'project_object_instance': project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermission.html', context)
@@ -592,6 +601,7 @@ def employeePermissionDetails_view(request):
 
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     validEmployee = Employee.objects.get(employee_id=employee_id_request)
 
@@ -603,7 +613,8 @@ def employeePermissionDetails_view(request):
 
     context = {
         'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
+        'permission_object_instance': permission_query_set_append,
+        'project_object_instance': project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermissionDetails.html', context)
@@ -615,14 +626,17 @@ def employeePermissionDelete_view(request):
     permission_query_set = Permission.objects.raw('SELECT * FROM permission')
     employee_query_set_append = []
     permission_query_set_append = []
+    project_query_set_append = []
 
     for employeePermission in query_set:
         employee_query_set_append.append(employeePermission.employee)
         permission_query_set_append.append(employeePermission.permission_level)
+        project_query_set_append.append(employeePermission.project)
 
     context = {
         'employee_object_instance': employee_query_set_append,
-        'permission_object_instance': permission_query_set_append
+        'permission_object_instance': permission_query_set_append,
+        'project_object_instance': project_query_set_append
     }
 
     return render(request, 'DB3450Repo/employeePermissionDelete.html', context)
