@@ -8,6 +8,11 @@
     <title>Construction</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
     <div class="container">
         <h1>Project Information</h1>
         <p>Search for your project information here</p>
@@ -34,6 +39,10 @@
                 <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectEmployees">Project Employees</a>
             </p>
         {% endfor %}
+
+        <h2>Create New Project</h2>
+        <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectAdd">Add New Project</a>
+
     </div>
 </body>
 </html>

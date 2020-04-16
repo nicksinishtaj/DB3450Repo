@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <title>Construction</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="http://localhost:8000">Home</a>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Update Logged Employee Hours</h1>
+      {% for item in employee_hours%}
+      <form action="{% url 'employeeHoursEditSelect' %}">
+        <p>Employee ID: {{item.employee_id}}</p>
+        <input type="hidden" name="employee_id" value="{{item.employee_id}}" />
+        <p>Project ID: {{item.project_id}}</p>
+        <input type="hidden" name="project_id" value="{{item.project_id}}" />
+        <p>
+          First day of the pay period: {{item.employee_hours_first_day}}
+        </p>
+        <input
+          type="hidden"
+          name="start_date"
+          value="{{item.employee_hours_first_day}}"
+        />
+        <div class="row">
+          <div class="col-md-6">
+            <h2>Week 1</h2>
+            <p>Enter the hours worked on Monday 1:</p>
+            <textarea name="mon1" cols="10" rows="1">
+{{item.employee_hours_mon1}}</textarea
+            >
+            <p>Enter the hours worked on Tuesday 1:</p>
+            <textarea name="tues1" cols="10" rows="1">
+{{item.employee_hours_tue1}}</textarea
+            >
+            <p>Enter the hours worked on Wednesday 1:</p>
+            <textarea name="wed1" cols="10" rows="1">
+{{item.employee_hours_wed1}}</textarea
+            >
+            <p>Enter the hours worked on Thursday 1:</p>
+            <textarea name="thur1" cols="10" rows="1">
+{{item.employee_hours_thr1}}</textarea
+            >
+            <p>Enter the hours worked on Friday 1:</p>
+            <textarea name="fri1" cols="10" rows="1">
+{{item.employee_hours_fri1}}</textarea
+            >
+            <p>Enter the hours worked on Saturday 1:</p>
+            <textarea name="sat1" cols="10" rows="1">
+{{item.employee_hours_sat1}}</textarea
+            >
+            <p>Enter the hours worked on Sunday 1:</p>
+            <textarea name="sun1" cols="10" rows="1">
+{{item.employee_hours_sun1}}</textarea
+            >
+          </div>
+          <div class="col-md-6">
+            <h2>Week 2</h2>
+            <p>Enter the hours worked on Monday 2:</p>
+            <textarea name="mon2" cols="10" rows="1">
+{{item.employee_hours_mon2}}</textarea
+            >
+            <p>Enter the hours worked on Tuesday 2:</p>
+            <textarea name="tues2" cols="10" rows="1">
+{{item.employee_hours_tue2}}</textarea
+            >
+            <p>Enter the hours worked on Wednesday 2:</p>
+            <textarea name="wed2" cols="10" rows="1">
+{{item.employee_hours_wed2}}</textarea
+            >
+            <p>Enter the hours worked on Thursday 2:</p>
+            <textarea name="thur2" cols="10" rows="1">
+{{item.employee_hours_thr2}}</textarea
+            >
+            <p>Enter the hours worked on Friday 2:</p>
+            <textarea name="fri2" cols="10" rows="1">
+{{item.employee_hours_fri2}}</textarea
+            >
+            <p>Enter the hours worked on Saturday 2:</p>
+            <textarea name="sat2" cols="10" rows="1">
+{{item.employee_hours_sat2}}</textarea
+            >
+            <p>Enter the hours worked on Sunday 2:</p>
+            <textarea name="sun2" cols="10" rows="1">
+{{item.employee_hours_sun2}}</textarea
+            >
+          </div>
+        </div>
+        <input type="submit" value="Submit" />
+      </form>
+      {% endfor %}
+    </div>
+  </body>
+</html>

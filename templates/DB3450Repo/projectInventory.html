@@ -8,6 +8,11 @@
     <title>Construction</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
     <div class="container">
         <h1>Project Inventory Information</h1>
         <p>The following items make up the project's inventory</p>
@@ -21,6 +26,17 @@
             </ul>
 
         {% endfor %}
+        
+        <div>
+            <p> Enter item name and quantity to remove</p>
+            <form method="GET">
+                <textarea name='inventory_item_name_delete' cols="10" rows="1"></textarea>
+                <br/>
+                <textarea name='quantity_delete' cols="10" rows="1"></textarea>
+                <br/>
+                <input type="submit" value="Submit"/>
+            </form>
+        </div>
     </div>  
 </body>
 </html>

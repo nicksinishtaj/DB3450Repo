@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <title>Construction</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="http://localhost:8000">Home</a>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Employee Hours</h1>
+      <h2>Employee</h2>
+      {% for item in employee_name%}
+      <p>
+        {{item.employee_name_first}} {{item.employee_name_last}}
+      </p>
+      {% endfor %}
+      <h2>Start Date of Pay Period</h2>
+      {% for item in start_date%}
+      <p>{{item}}</p>
+      {% endfor %}
+      <h2>Hours</h2>
+      <table>
+        <tr>
+          <th>Project</th>
+          {% for item in project_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Monday 1</th>
+          {% for item in mon1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Tuesday 1</th>
+          {% for item in tues1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Wednesday 1</th>
+          {% for item in wed1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Thursday 1</th>
+          {% for item in thur1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Friday 1</th>
+          {% for item in fri1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Satday 1</th>
+          {% for item in sat1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Sunday 1</th>
+          {% for item in sun1_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Monday 2</th>
+          {% for item in mon2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Tuesday 2</th>
+          {% for item in tues2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Wednesday 2</th>
+          {% for item in wed2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Thursday 2</th>
+          {% for item in thur2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Friday 2</th>
+          {% for item in fri2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Satday 2</th>
+          {% for item in sat2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Sunday 2</th>
+          {% for item in sun2_list%}
+          <td>{{item}}</td>
+          {% endfor %}
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

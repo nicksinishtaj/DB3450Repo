@@ -8,9 +8,16 @@
     <title>Construction</title>
 </head>
 <body>
-    <h1>Inventory</h1>
-        {% for item in object_instance %}
-            <p>{{item.inventory_name}} - {{item.inventory_description}}</p>
-        {% endfor %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Inventory</h1>
+            {% for item in object_instance %}
+                <p>{{item.inventory_name}} - {{item.inventory_description}}</p>
+            {% endfor %}
+    </div>
 </body>
 </html>

@@ -8,16 +8,46 @@
     <title>Construction</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="http://localhost:8000">Home</a>
+        </div>
+    </nav>
     <div class="container">
         <h1>Project Budgetary Information</h1>
+        <div>
+            <h2>Full Project Budget</h2>
+            {% for item in budgetResults %}
+            <label>Project Budget: </label> ${{item.project_budget}}
+            {% endfor %}
+        </div>
 
-        {% for item in budgetResults %}
-           <label>Project Budget: </label> {{item.project_budget}}
-        {% endfor %}
+        <div>
+            <h2>Purchase Expenditures</h2>
+            {% for purchase in purchaseProjectInfo %}
+                <ul>
+                    <li> Item Name: {{purchase.0}} </li>
+                    <li> Purchase Quantity: {{purchase.2}} </li>
+                    <li> Purchase Total: ${{purchase.1}} </li>
+                    <li> Purchase Date: {{purchase.3}} </li>
+                </ul>
+            {% endfor %}
+        </div>
 
-        <p> See only purchase information:</p>
+        <div>
+            <h2>Project Employee Costs</h2>
+            {% for emp in employeeCostInfo %}
+                <ul>
+                    <li> Employee Name: {{emp.2}} {{emp.1}}</li>
+                    <li> Employee Salary: ${{emp.3}}</li>
+                </ul>
+            {% endfor %}
+        </div>
+
+        <div>
+            <p> See only purchase information:</p>
             <a class="btn btn-primary my-md-2" href="http://localhost:8000/projectPurchases">Project Purchases</a>
-
+        </div>
     </div>
 </body>
 </html>

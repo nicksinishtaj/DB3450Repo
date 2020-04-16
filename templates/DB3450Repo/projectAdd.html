@@ -13,24 +13,27 @@
           <a class="navbar-brand" href="http://localhost:8000">Home</a>
         </div>
     </nav>
-    <div class="container">
-        <h1>Employee Purchase Information</h1>
+    <div class = "container">
+        <h1> Project Addtion Page</h1>
 
         <form method="GET">
-            <textarea name='employee_info_id' cols="10" rows="1"></textarea>
+            <label>Project ID:</label>
+            <textarea name='project_add_id' cols="10" rows="1"></textarea>
+            <br/>
+            <label>Project Status:</label>
+            <textarea name='project_add_status' cols="10" rows="1"></textarea>
+            <br/>
+            <label>Project Name:</label>
+            <textarea name='project_add_name' cols="10" rows="1"></textarea>
+            <br/>
+            <label>Project Budget:</label>
+            <textarea name='project_add_budget' cols="10" rows="1"></textarea>
+            <br/>
+            <label>Customer Company ID:</label>
+            <textarea name='cus_comp_add_id' cols="10" rows="1"></textarea>
             <br/>
             <input type="submit" value="Submit"/>
         </form>
-        <br/>
-
-        {% for item in empPurchInfo %}
-            <ul>
-                <li>Item Name: {{item.0}}</li>
-                <li>Purchase Date: {{item.3}}</li>
-                <li>Purchase Quantity: {{item.1}} piece(s)</li>
-                <li>Purchase Price: ${{item.2}}</li>
-            </ul>
-        {% endfor %}
-    </div>
 </body>
+
 </html>

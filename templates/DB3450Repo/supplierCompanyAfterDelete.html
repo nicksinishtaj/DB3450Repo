@@ -1,3 +1,4 @@
+@@ -0,0 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,30 +17,24 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Add Permission</h1>
-        <p>Enter new inventory name and description</p>
+        <h1>Add Supplier</h1>
+        <p>Supplier Company Name</p>
         <br/>
         <div class="row">
             <div class="col">
-                <h1>ID</h1>
-                {% for item in object_instance %}
-                    <p>{{item.supplier_company_id}}</p>
-                {% endfor %}
-            </div>
-            <div class="col">
-                <h1>Name</h1>
+                <h1>Supplier Company Name</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_company_name}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Street1</h1>
+                <h1>Supplier Street Address</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_company_street1}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Street2</h1>
+                <h1>Alternative Address</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_company_street2}}</p>
                 {% endfor %}
@@ -57,7 +52,7 @@
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Zip</h1>
+                <h1>Zip Code</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_company_zip}}</p>
                 {% endfor %}
