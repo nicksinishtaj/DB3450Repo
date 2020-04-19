@@ -367,6 +367,9 @@ def inventorySupplierAfterAdd_view(request):
     inventory_supplier_preferred_int = int(
         inventory_supplier_preferred_request)
 
+    og_query_set = InventorySupplier.objects.raw(
+        'SELECT * FROM inventory_supplier')
+
     final_query_set = []
     inventory_query_set_append = []
     supplier_query_set_append = []
@@ -379,14 +382,20 @@ def inventorySupplierAfterAdd_view(request):
     newInventory = Inventory.objects.get(inventory_name = inventory_name_request)
     newSupplier = SupplierCompany.objects.get(supplier_company_name = supplier_company_request)
 
-    validateInventory = InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier) if InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier) is not None else None
+    x = 0
 
-    if(validateInventory is not None):
+    for obj in og_query_set:
+        if(obj.inventory_supplier_inventory == newInventory and obj.supplier == newSupplier):
+            validateInventory = InventorySupplier.objects.get(inventory_supplier_inventory = newInventory, supplier = newSupplier)
+            x = 1
+
+
+    if(x == 1):
         cursor = connection.cursor()
         cursor.execute('UPDATE inventory_supplier SET inventory_supplier_cost = %s, inventory_supplier_amount = %s, inventory_supplier_notes = %s, inventory_supplier_preferred = %s WHERE INVENTORY_SUPPLIER_INVENTORY_ID = %s AND SUPPLIER_ID = %s', [
                        inventory_supplier_cost_int, inventory_supplier_amount_int, inventory_supplier_notes_request, inventory_supplier_preferred_int, validateInventory.inventory_supplier_inventory.inventory_id, validateInventory.supplier.supplier_company_id])
 
-    if((newInventory is not None or newSupplier is not None) and validateInventory is None):
+    if((newInventory is not None or newSupplier is not None) and x == 0):
         newInventorySupplier = InventorySupplier(inventory_supplier_inventory=newInventory, supplier=newSupplier, inventory_supplier_cost=inventory_supplier_cost_request,
                                                  inventory_supplier_amount=inventory_supplier_amount_request, inventory_supplier_notes=inventory_supplier_notes_request, inventory_supplier_preferred=inventory_supplier_preferred_request)
         cursor = connection.cursor()
@@ -1187,16 +1196,21 @@ def supplierAfterAddOrUpdate_view(request):
 
 def supplierContactUpdate_view(request):
     query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    supplier_query_set_append = []
+
+    for obj in query_set:
+        supplier_query_set_append.append(obj.supplier_contact_supplier)
 
     context = {
         'object_instance': query_set,
+        'supplier_object_instance': supplier_query_set_append
     }
     return render(request, 'DB3450Repo/supplierContactUpdate.html', context)
 
 
 def supplierContactAfterUpdate_view(request):
     id_req = request.GET['supplier_contact_id']
-    id2_req = request.GET['supplier_id']
+    supplier_name_req = request.GET['supplier_id']
     fname_req = request.GET['supplier_contact_fname']
     lname_req = request.GET['supplier_contact_lname']
     email_req = request.GET['supplier_contact_email']
@@ -1205,25 +1219,34 @@ def supplierContactAfterUpdate_view(request):
     current_req = request.GET['supplier_contact_current']
     id_req_int = 0
     validateSupplier = None
+    current_req_int = int(current_req)
 
     if(id_req is not None and id_req != ''):
         id_req_int = int(id_req)
-        id2_req_int = int(id2_req)
         validateSupplier = SupplierContact.objects.get(
             supplier_contact_id=id_req_int)
     else:
         validateSupplier = None
 
+    supplier_query_set = SupplierCompany.objects.raw('SELECT * FROM supplier_company')
+
+    newSupplier = SupplierCompany.objects.get(supplier_company_name = supplier_name_req)
+
     if(validateSupplier is not None):
         cursor = connection.cursor()
-        cursor.execute('UPDATE supplier_contact SET supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_COMPANY_ID = %s', [
-                       fname_req, lname_req, email_req, tel_req, role_req, current_req])
+        cursor.execute('UPDATE supplier_contact SET supplier_contact_supplier_id = %s, supplier_contact_fname = %s, supplier_contact_lname = %s, supplier_contact_email = %s, supplier_contact_tel = %s, supplier_contact_role = %s, supplier_contact_current = %s WHERE SUPPLIER_CONTACT_ID = %s', [
+                       newSupplier.supplier_company_id, fname_req, lname_req, email_req, tel_req, role_req, current_req_int, id_req_int])
         connection.commit()
 
     query_set = SupplierContact.objects.raw('SELECT * FROM supplier_contact')
+    supplier_query_set_append = []
+
+    for obj in query_set:
+        supplier_query_set_append.append(obj.supplier_contact_supplier)
 
     context = {
         'object_instance': query_set,
+        'supplier_object_instance': supplier_query_set_append
     }
     return render(request, 'DB3450Repo/supplierContactAfterUpdate.html', context)
 
