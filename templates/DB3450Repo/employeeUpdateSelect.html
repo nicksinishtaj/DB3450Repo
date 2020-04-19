@@ -23,15 +23,15 @@
       </div>
     </nav>
     <div class="container">
-      <h1>View Customers Managed by a Given Employee</h1>
-      <form action="{% url 'employeeCustomersManaged' %}">
+      <h1>Update Employee Information</h1>
+      {% for item in messages%}
+      <p>{{item}}</p>
+      {% endfor %}
+      <form action="{% url 'employeeUpdate' %}">
         <p>Enter employee ID:</p>
         <textarea name="employee_id" cols="10" rows="1"></textarea>
+        <br />
         <input type="submit" value="Submit" />
-        <h2>Customers Managed:</h2>
-        {% for item in customers%}
-        <p>{{item.customer_company_name}}</p>
-        {% endfor %}
       </form>
     </div>
   </body>
