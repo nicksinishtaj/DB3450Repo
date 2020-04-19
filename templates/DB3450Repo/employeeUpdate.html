@@ -23,38 +23,61 @@
       </div>
     </nav>
     <div class="container">
-      <h1>View Logged Employee Hours</h1>
-      {% for item in messages%}
-      <p>{{item}}</p>
-      {% endfor %}
-      <form action="{% url 'employeeAdd' %}">
+      <h1>Update Employee Information</h1>
+      {% for item in employees%}
+      <form action="{% url 'employeeUpdateSelect' %}">
+        <p>Employee ID: {{item.employee_id}}</p>
+        <input type="hidden" name="employee_id" value="{{item.employee_id}}" />
         <p>Enter employee first name:</p>
-        <textarea name="first_name" cols="10" rows="1"></textarea>
+        <textarea name="first_name" cols="10" rows="1">
+{{item.employee_name_first}}</textarea
+        >
         <p>Enter employee middle name:</p>
-        <textarea name="middle_name" cols="10" rows="1"></textarea>
+        <textarea name="middle_name" cols="10" rows="1">
+{{item.employee_name_first}}</textarea
+        >
         <p>Enter employee last name:</p>
-        <textarea name="last_name" cols="10" rows="1"></textarea>
+        <textarea name="last_name" cols="10" rows="1">
+{{item.employee_name_middle}}</textarea
+        >
         <p>Enter employee job title:</p>
-        <textarea name="title" cols="10" rows="1"></textarea>
+        <textarea name="title" cols="10" rows="1">
+{{item.employee_name_last}}</textarea
+        >
         <p>Enter employee date of birth (YYYY-MM-DD):</p>
-        <textarea name="dob" cols="10" rows="1"></textarea>
+        <textarea name="dob" cols="10" rows="1">{{item.employee_dob}}</textarea>
         <p>Enter employee hire date (YYYY-MM-DD):</p>
-        <textarea name="hire_date" cols="10" rows="1"></textarea>
+        <textarea name="hire_date" cols="10" rows="1">
+{{item.employee_hire_date}}</textarea
+        >
         <p>Enter employee work email:</p>
-        <textarea name="work_email" cols="10" rows="1"></textarea>
+        <textarea name="work_email" cols="10" rows="1">
+{{item.employee_email_work}}</textarea
+        >
         <p>Enter employee alternate email:</p>
-        <textarea name="alt_email" cols="10" rows="1"></textarea>
+        <textarea name="alt_email" cols="10" rows="1">
+{{item.employee_email_alt}}</textarea
+        >
         <p>Enter employee work phone number:</p>
-        <textarea name="work_phone" cols="10" rows="1"></textarea>
+        <textarea name="work_phone" cols="10" rows="1">
+{{item.employee_tel_work}}</textarea
+        >
         <p>Enter employee alternate phone number:</p>
-        <textarea name="alt_phone" cols="10" rows="1"></textarea>
+        <textarea name="alt_phone" cols="10" rows="1">
+{{item.employee_tel_alt}}</textarea
+        >
         <p>Enter employee manager id:</p>
-        <textarea name="manager_id" cols="10" rows="1"></textarea>
+        <textarea name="manager_id" cols="10" rows="1">
+{{item.employee_manager_id}}</textarea
+        >
         <p>Enter employee pay rate:</p>
-        <textarea name="pay_rate" cols="10" rows="1"></textarea>
+        <textarea name="pay_rate" cols="10" rows="1">
+{{item.employee_pay_rate}}</textarea
+        >
         <br />
         <input type="submit" value="Submit" />
       </form>
+      {% endfor %}
     </div>
   </body>
 </html>
