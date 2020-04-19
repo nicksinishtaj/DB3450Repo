@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -17,41 +16,42 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Update Supplier Contacts</h1>
+        <h1>Update Supplier Contact</h1>
+        <p>Enter updated supplier</p>
         <br/>
         <div class="row">
             <div class="col">
-                <h1>ID</h1>
+                <h1>Contact ID</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_contact_id}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Supplier</h1>
-                {% for item in supplier_object_instance %}
-                    <p>{{item.supplier_company_name}}</p>
+                <h1>Supplier ID</h1>
+                {% for item in object_instance %}
+                    <p>{{item.supplier_id}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>F.Name</h1>
+                <h1>Name</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_contact_fname}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>L.Name</h1>
+                <h1>Last Name</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_contact_lname}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Email</h1>
+                <h1>email</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_contact_email}}</p>
                 {% endfor %}
             </div>
             <div class="col">
-                <h1>Phone</h1>
+                <h1>Telephone</h1>
                 {% for item in object_instance %}
                     <p>{{item.supplier_contact_tel}}</p>
                 {% endfor %}
