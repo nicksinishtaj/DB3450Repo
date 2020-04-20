@@ -14,15 +14,18 @@
         </div>
     </nav>
     <div class="container">
-        <h1>Add Permission</h1>
-        <p>Enter employee ID, permission to add, project it is on, and today's date</p>
+        <h1>Remove Permission</h1>
+        <p>Enter employee ID, permission to remove, and project it is on</p>
         <br/>
 
         <form action="{% url 'employeePermissionAfterDelete' %}">
+            <label>Employee ID:</label>
             <textarea name="employee_id" cols="10" rows="1"></textarea>
             <br/>
+            <label>Permission Level:</label>
             <textarea name="permission_level" cols="10" rows="1"></textarea>
             <br/>
+            <label>Project ID:</label>
             <textarea name="project_id" cols="10" rows="1"></textarea>
             <input type="submit" value="Submit" />
         </form>
